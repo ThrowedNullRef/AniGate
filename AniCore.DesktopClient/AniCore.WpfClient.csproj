@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="LightInject" Version="6.4.0" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1108.44" />
   </ItemGroup>
 
   <ItemGroup>

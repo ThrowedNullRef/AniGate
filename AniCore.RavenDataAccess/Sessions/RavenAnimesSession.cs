@@ -5,17 +5,20 @@ using Raven.Client.Documents.Session;
 
 namespace AniCore.RavenDataAccess.Sessions;
 
-public sealed class RavenWatchlistSession : RavenUnitOfWork, IWatchlistSession
+public sealed class RavenAnimesSession : RavenUnitOfWork, IAnimesSession
 {
-    public RavenWatchlistSession(IAsyncDocumentSession session) : base(session)
+    public RavenAnimesSession(IAsyncDocumentSession session) : base(session)
     {
     }
 
-    public Task<List<Anime>> GetWatchlistAnimesAsync() =>
+    public Task<List<Anime>> GetAnimesAsync() =>
         Session.Query<Anime>()
-               .Where(a => a.IsWatching)
+               .OrderBy(anime => anime.OriginalName)
                .ToListAsync();
 
     public Task<Anime> GetAnimeAsync(string id) =>
         Session.LoadAsync<Anime>(id);
+
+    public void DeleteAnime(Anime anime) =>
+        Session.Delete(anime);
 }

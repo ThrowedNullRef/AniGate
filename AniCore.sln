@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AniCore.Core", "AniCore.Core\AniCore.Core.csproj", "{6985E9D2-40E3-4512-8B2C-5786A6962CBE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AniCore.DesktopClient", "AniCore.DesktopClient\AniCore.DesktopClient.csproj", "{E3BD0F10-39A2-40D3-9312-4B30914FA899}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AniCore.WpfClient", "AniCore.DesktopClient\AniCore.WpfClient.csproj", "{E3BD0F10-39A2-40D3-9312-4B30914FA899}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AniCore.RavenDataAccess", "AniCore.RavenDataAccess\AniCore.RavenDataAccess.csproj", "{3A6133D7-5FA4-4DA5-951E-4B59431E7F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AniCore.RavenDataAccess", "AniCore.RavenDataAccess\AniCore.RavenDataAccess.csproj", "{3A6133D7-5FA4-4DA5-951E-4B59431E7F2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

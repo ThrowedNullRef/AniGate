@@ -2,9 +2,7 @@
 {
     public interface IWatchlistSession : IUnitOfWorkSession
     {
-        Task<List<Anime>> GetAnimesAsync();
-
-        Task AddAnimeAsync(Anime anime);
+        Task<List<Anime>> GetWatchlistAnimesAsync();
 
         Task<Anime> GetAnimeAsync(string id);
     }

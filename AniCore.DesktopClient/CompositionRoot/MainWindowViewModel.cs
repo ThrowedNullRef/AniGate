@@ -1,148 +1,95 @@
-﻿using AniCore.Core.AnimeProviders;
+﻿using AniCore.Core;
 using AniCore.Core.DataAccess;
-using AniCore.DesktopClient.FrameworkExtensions;
-using AniCore.DesktopClient.Watchlist;
+using AniCore.WpfClient.FrameworkExtensions;
+using LightInject;
+using MaterialDesignExtensions.Model;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using AniCore.Core.AnimeSynchronization;
+using AniCore.WpfClient.Animes;
 
-namespace AniCore.DesktopClient.CompositionRoot;
+namespace AniCore.WpfClient.CompositionRoot;
 
-public sealed class MainWindowViewModel : BaseViewModel
+public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
 {
-    private readonly Func<IWatchlistSession> _createSession;
-    private readonly Func<IAnimeProvider> _createAnimeProvider;
+    private const string WatchListKey = "Watchlist";
+    private const string AnimesKey = "Animes";
+    private const string AnimeImportKey = "Import Anime";
 
-    private bool _isAddingAnimeToWatchlist;
-    private string _newAnimeUrl = string.Empty;
-    private List<WatchlistEpisode> _episodes = new();
-    private bool _isLoading;
+    private readonly IServiceFactory _container;
+    private readonly IAnimeSynchronizer _animeSynchronizer;
 
-    public MainWindowViewModel(Func<IWatchlistSession> createSession, Func<IAnimeProvider> createAnimeProvider)
+    private object? _currentView;
+    private bool _isContentFullScreen;
+
+    public MainWindowViewModel(IServiceFactory container, IAnimeSynchronizer animeSynchronizer)
     {
-        _createSession = createSession;
-        _createAnimeProvider = createAnimeProvider;
-        AddToWatchlistCommand = new DelegateCommand(AddAnimeToWatchlist, () => Uri.TryCreate(NewAnimeUrl, UriKind.Absolute, out _));
-        WatchEpisodeCommand = new ParameterizedCommand<WatchlistEpisode>(WatchEpisode);
-    }
-
-    public List<WatchlistEpisode> Episodes
-    {
-        get => _episodes;
-        set
+        _container = container;
+        _animeSynchronizer = animeSynchronizer;
+        RefreshAnimesCommand = new DelegateCommand(() => _animeSynchronizer.SynchronizeAsync());
+        NavItemSelectedCommand = new ParameterizedCommand<NavigationItem?>(item =>
         {
-            _episodes = value.OrderByDescending(e => e.Episode.IsNew)
-                             .ThenBy(e => e.Anime.OriginalName)
-                             .ThenBy(e => e.Episode.Position)
-                             .ToList();
-            OnPropertyChanged(nameof(Episodes));
-        }
-    }
+            if (item is null)
+                return;
 
-    public DelegateCommand AddToWatchlistCommand { get; }
-
-    public ParameterizedCommand<WatchlistEpisode> WatchEpisodeCommand { get; }
-
-    public bool IsAddingAnimeToWatchlist
-    {
-        get => _isAddingAnimeToWatchlist;
-        private set
-        {
-            _isAddingAnimeToWatchlist = value;
-            OnPropertyChanged(nameof(IsAddingAnimeToWatchlist));
-        }
-    }
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set
-        {
-            _isLoading = value;
-            OnPropertyChanged(nameof(IsLoading));
-        }
-    }
-
-
-    public string NewAnimeUrl
-    {
-        get => _newAnimeUrl;
-        set
-        {
-            _newAnimeUrl = value;
-            AddToWatchlistCommand.RaiseCanExecuteChanged();
-            OnPropertyChanged(nameof(NewAnimeUrl));
-        }
-    }
-
-    public async void WatchEpisode(WatchlistEpisode? episode)
-    {
-        if (episode is null)
-            return;
-
-        Process.Start(new ProcessStartInfo(episode.Episode.VoeLink)
-        {
-            UseShellExecute = true
+            switch (item.Label)
+            {
+                case WatchListKey:
+                    NavigateToWatchlist();
+                    break;
+                case AnimesKey:
+                    NavigateToAnimes();
+                    break;
+                case AnimeImportKey:
+                    NavigateToAnimeImport();
+                    break;
+            }
         });
 
-        using var session = _createSession();
-        var anime = await session.GetAnimeAsync(episode.Anime.Id);
-        var watchedEpisode = anime.Episodes.FirstOrDefault(e => e.Position == episode.Episode.Position);
-        if (watchedEpisode == null) 
-            return;
-
-        watchedEpisode.IsNew = false;
-        await session.SaveChangesAsync();
-        await ReloadAnimesAsync();
+        _animeSynchronizer.OnIsSynchronizingChanged += () => OnPropertyChanged(nameof(IsSynchronizing));
     }
 
-    public async void AddAnimeToWatchlist()
+    public ParameterizedCommand<NavigationItem?> NavItemSelectedCommand { get; }
+
+    public List<INavigationItem> NavigationItems =>
+        new ()
+        {
+            new FirstLevelNavigationItem { Label = WatchListKey, Icon = PackIconKind.Eye, IsSelected = true },
+            new FirstLevelNavigationItem { Label = AnimesKey, Icon = PackIconKind.Video },
+            new FirstLevelNavigationItem { Label = AnimeImportKey, Icon = PackIconKind.Import }
+        };
+
+    public object? CurrentView
     {
-        if (IsAddingAnimeToWatchlist || !Uri.TryCreate(NewAnimeUrl, UriKind.Absolute, out var animeUri))
-            return;
-
-        try
-        {
-            IsAddingAnimeToWatchlist = true;
-            using var animeProvider = _createAnimeProvider();
-            var anime = await animeProvider.ReadAnimeAsync(animeUri);
-
-            using var session = _createSession();
-            await session.AddAnimeAsync(anime);
-            await session.SaveChangesAsync();
-
-            Episodes = anime.Episodes
-                            .Select(e => new WatchlistEpisode(anime, e))
-                            .Concat(Episodes)
-                            .ToList();
-
-            NewAnimeUrl = string.Empty;
-        }
-        finally
-        {
-            IsAddingAnimeToWatchlist = false;
-        }
+        get => _currentView;
+        set => SetIfDifferent(ref _currentView, value);
     }
 
-    public async Task ReloadAnimesAsync()
-    {
-        if (IsLoading)
-            return;
+    public bool IsSynchronizing => _animeSynchronizer.IsSynchronizing;
 
-        try
-        {
-            IsLoading = true;
-            using var session = _createSession();
-            var animes = await session.GetAnimesAsync();
-            Episodes = animes.SelectMany(anime => anime.Episodes.Select(episode => new WatchlistEpisode(anime, episode)))
-                             .ToList();
-            OnPropertyChanged(nameof(Episodes));
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+    public bool IsContentFullScreen
+    {
+        get => _isContentFullScreen;
+        set => SetIfDifferent(ref _isContentFullScreen, value);
+    }
+
+    public DelegateCommand RefreshAnimesCommand { get; }
+
+    public void NavigateToWatchlist() =>
+        CurrentView = _container.GetInstance<WatchlistView>();
+
+    public void NavigateToAnimes() =>
+        CurrentView = _container.GetInstance<AnimesView>();
+
+    public void NavigateToAnimeImport() =>
+        CurrentView = _container.GetInstance<AnimeImportView>();
+
+    public async void NavigateToPlayer(Anime anime)
+    {
+        var playerView = _container.GetInstance<AnimePlayerView>();
+        var playerViewModel = (AnimePlayerViewModel) playerView.DataContext;
+        await playerViewModel.LoadAnimeAsync(anime.Id);
+        CurrentView = playerView;
     }
 }

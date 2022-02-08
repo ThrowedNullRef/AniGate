@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using AniCore.Core;
+using AniCore.WpfClient.CompositionRoot;
 using LightInject;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
-using AniCore.DesktopClient.CompositionRoot;
 
-namespace AniCore.DesktopClient
+namespace AniCore.WpfClient
 {
     public partial class App : Application
     {
@@ -15,17 +16,33 @@ namespace AniCore.DesktopClient
         public App()
         {
             ConfigureServices();
+            RunHostedServices();
         }
 
         private void ConfigureServices()
         {
-            _container.RegisterStartup()
+            _container.RegisterInstance<IServiceContainer>(_container)
+                      .RegisterCore()
                       .RegisterDataAccess()
                       .RegisterAnimeProvider()
-                      .RegisterWatchlist();
+                      .RegisterAnimes()
+                      .RegisterWatchlist()
+                      .RegisterAnimePlayer()
+                      .RegisterAnimeImport()
+                      .RegisterAnimeSynchronization();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e) =>
-            _container.GetInstance<MainWindow>().Show();
+            _container.GetInstance<MainWindow>()
+                      .Show();
+
+        private void RunHostedServices()
+        {
+            var services = _container.GetAllInstances<IHostedService>();
+            foreach (var service in services)
+            {
+                service.Start();
+            }
+        }
     }
 }

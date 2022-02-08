@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
+using AniCore.Core.FrameworkExtensions;
 
 namespace AniCore.Core.AnimeProviders;
 
@@ -21,12 +22,15 @@ public static class AnimeToastHtmlExtensions
             : null;
     }
 
-    public static Uri? ReadPlayerLink(this IHtmlDocument document)
-    {
-        var link = document.GetElementById("player-embed")?
-                           .Children.FirstOrDefault()?
-                           .GetAttribute("href");
+    public static Uri? ReadPlayerLink(this IHtmlDocument document) =>
+        document.GetElementById("player-embed")?
+                .Children.FirstOrDefault()?
+                .GetAttribute("href")
+                .ToUri();
 
-        return link != null ? new Uri(link) : null;
-    }
+    public static Uri? ReadThumbnailUrl(this IHtmlDocument document) =>
+        document.GetElementsByClassName("size-full alignleft")
+                .FirstOrDefault()?
+                .GetAttribute("src")?
+                .ToUri();
 }
