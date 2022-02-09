@@ -1,0 +1,131 @@
+﻿<Window x:Class="AniGate.WpfClient.CompositionRoot.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+        xmlns:compositionRoot="clr-namespace:AniGate.WpfClient.CompositionRoot"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        Height="900"
+        Width="1600"
+        WindowStyle="None"
+        ResizeMode="CanResizeWithGrip"
+        AllowsTransparency="True"
+        d:DataContext="{d:DesignInstance Type=compositionRoot:MainWindowViewModel, IsDesignTimeCreatable=False}"
+        SizeChanged="Window_SizeChanged"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Column="0"
+            Grid.Row="0"
+            MouseDown="Border_MouseDown"
+            Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
+            >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Grid.Row="0" Background="{StaticResource MaterialDesignDarkSeparatorBackground}" />
+
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                        Command="{Binding RefreshAnimesCommand}"
+                        IsEnabled="{Binding IsSynchronizing, Converter={StaticResource InvertBooleanConverter}}"
+                        Visibility="{Binding IsSynchronizing, Converter={StaticResource InverseBoolToVisConverter}}"
+                        HorizontalAlignment="Left"
+                        Margin="20 0 0 0"
+                        Width="60"
+                        Style="{StaticResource MaterialDesignOutlinedLightButton}"
+                        >
+                        <material:PackIcon Kind="Refresh" />
+                    </Button>
+
+                    <TextBlock Grid.Column="0"
+                           Visibility="{Binding IsSynchronizing, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           Margin="20 0 0 0"
+                           Text="Synchronizing..."
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource MaterialDesignToolForeground}"
+                           FontSize="11"
+                           />
+
+                    <TextBlock Text="AniGate"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Grid.Column="1"
+                           />
+
+                    <StackPanel Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal"
+                                >
+                        <Button Click="Minimize_Click" 
+                                Style="{StaticResource WindowMinimizeButtonStyle}"
+                                Width="52"
+                                >
+                            <material:PackIcon Kind="WindowMinimize" />
+                        </Button>
+                        <Button Click="Maximize_Click" 
+                                Style="{StaticResource WindowMaximizeRestoreButtonStyle}"
+                                Width="52"
+                                >
+                            <material:PackIcon Kind="WindowMaximize" />
+                        </Button>
+                        <Button Click="Close_Click" 
+                                Style="{StaticResource WindowCloseButtonStyle}"
+                                Width="52"
+                                >
+                            <material:PackIcon Kind="Close" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="0"
+          Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0"
+                  Grid.Row="0"
+                  Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
+            >
+                <mde:SideNavigation Items="{Binding NavigationItems}"
+                                    NavigationItemSelectedCommand="{Binding NavItemSelectedCommand}"
+                                    Margin="4 24"
+                                    />
+            </Grid>
+
+            <ScrollViewer Grid.Column="1"
+                      Grid.Row="0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      >
+                <ContentControl Content="{Binding CurrentView}"/>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

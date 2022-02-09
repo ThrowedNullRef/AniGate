@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LightInject" Version="6.4.0" />
+    <PackageReference Include="MaterialDesignExtensions" Version="3.3.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1108.44" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AniGate.RavenDataAccess\AniGate.RavenDataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
