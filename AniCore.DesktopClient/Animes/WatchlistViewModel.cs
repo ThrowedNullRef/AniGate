@@ -26,9 +26,9 @@ public sealed class WatchlistViewModel : BaseNotifyPropertyChanged
             OnRemoveFromWatchlist = OnRemoveFromWatchlist
         });
 
-        Initialize();
-
         animeSynchronizer.OnSynchronized += AnimeSynchronizer_OnSynchronized;
+
+        Initialize();
     }
    
     ~WatchlistViewModel()

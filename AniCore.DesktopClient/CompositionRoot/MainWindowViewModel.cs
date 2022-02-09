@@ -1,49 +1,35 @@
-﻿using AniCore.Core;
-using AniCore.Core.DataAccess;
+﻿using System;
+using AniCore.Core;
+using AniCore.Core.AnimeSynchronization;
+using AniCore.WpfClient.Animes;
 using AniCore.WpfClient.FrameworkExtensions;
 using LightInject;
 using MaterialDesignExtensions.Model;
-using MaterialDesignThemes.Wpf;
-using System;
 using System.Collections.Generic;
-using AniCore.Core.AnimeSynchronization;
-using AniCore.WpfClient.Animes;
+using System.Linq;
 
 namespace AniCore.WpfClient.CompositionRoot;
 
 public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
 {
-    private const string WatchListKey = "Watchlist";
-    private const string AnimesKey = "Animes";
-    private const string AnimeImportKey = "Import Anime";
-
     private readonly IServiceFactory _container;
     private readonly IAnimeSynchronizer _animeSynchronizer;
 
     private object? _currentView;
+    private string? _previousViewKey;
 
     public MainWindowViewModel(IServiceFactory container, IAnimeSynchronizer animeSynchronizer)
     {
         _container = container;
         _animeSynchronizer = animeSynchronizer;
         RefreshAnimesCommand = new DelegateCommand(() => _animeSynchronizer.SynchronizeAsync());
+
         NavItemSelectedCommand = new ParameterizedCommand<NavigationItem?>(item =>
         {
             if (item is null)
                 return;
 
-            switch (item.Label)
-            {
-                case WatchListKey:
-                    NavigateToWatchlist();
-                    break;
-                case AnimesKey:
-                    NavigateToAnimes();
-                    break;
-                case AnimeImportKey:
-                    NavigateToAnimeImport();
-                    break;
-            }
+            NavigateByKey(item.Label);
         });
 
         _animeSynchronizer.OnIsSynchronizingChanged += () => OnPropertyChanged(nameof(IsSynchronizing));
@@ -51,13 +37,20 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
 
     public ParameterizedCommand<NavigationItem?> NavItemSelectedCommand { get; }
 
-    public List<INavigationItem> NavigationItems =>
-        new ()
-        {
-            new FirstLevelNavigationItem { Label = WatchListKey, Icon = PackIconKind.Eye, IsSelected = true },
-            new FirstLevelNavigationItem { Label = AnimesKey, Icon = PackIconKind.Video },
-            new FirstLevelNavigationItem { Label = AnimeImportKey, Icon = PackIconKind.Import }
-        };
+    public List<INavigationItem> NavigationItems => 
+        NavigationTarget.All
+                        .Select((nt, index) =>
+                         {
+                             var item = new FirstLevelNavigationItem
+                             {
+                                 Label = nt.Key,
+                                 Icon = nt.Icon,
+                                 IsSelected = index == 0
+                             };
+
+                             return (INavigationItem)item;
+                         })
+                        .ToList();
 
     public object? CurrentView
     {
@@ -75,8 +68,10 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
     public void NavigateToAnimes() =>
         CurrentView = _container.GetInstance<AnimesView>();
 
-    public void NavigateToAnimeImport() =>
+    public void NavigateToAnimeImport()
+    {
         CurrentView = _container.GetInstance<AnimeImportView>();
+    }
 
     public async void NavigateToPlayer(Anime anime)
     {
@@ -84,5 +79,32 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
         var playerViewModel = (AnimePlayerViewModel) playerView.DataContext;
         await playerViewModel.LoadAnimeAsync(anime.Id);
         CurrentView = playerView;
+    }
+
+    public void NavigateBack()
+    {
+        if (_previousViewKey is null)
+            return;
+
+        NavigateByKey(_previousViewKey);
+        _previousViewKey = null;
+    }
+
+    private void NavigateByKey(string key)
+    {
+        switch (key)
+        {
+            case NavigationTarget.WatchListKey:
+                NavigateToWatchlist();
+                break;
+            case NavigationTarget.AnimesKey:
+                NavigateToAnimes();
+                break;
+            case NavigationTarget.AnimeImportKey:
+                NavigateToAnimeImport();
+                break;
+        }
+
+        _previousViewKey = key;
     }
 }

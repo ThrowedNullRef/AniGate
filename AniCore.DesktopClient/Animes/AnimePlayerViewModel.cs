@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AniCore.WpfClient.CompositionRoot;
 
 namespace AniCore.WpfClient.Animes;
 
@@ -19,11 +20,13 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
     private List<INavigationItem> _episodeItems = new ();
     private Episode? _currentEpisode;
     private WebPlayerViewModel? _webPlayerViewModel;
+    private Anime? _anime;
 
-    public AnimePlayerViewModel(Func<IAnimePlayerSession> createSession, IAnimeSynchronizer animeSynchronizer)
+    public AnimePlayerViewModel(Func<IAnimePlayerSession> createSession, IAnimeSynchronizer animeSynchronizer, INavigator navigator)
     {
         _createSession = createSession;
         _animeSynchronizer = animeSynchronizer;
+        NavigateBackCommand = new DelegateCommand(navigator.NavigateBack);
         NavItemSelectedCommand = new ParameterizedCommand<NavigationItem>(OnNavItemSelected);
         animeSynchronizer.OnSynchronized += AnimeSynchronizer_OnSynchronized;
     }
@@ -33,7 +36,11 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
         _animeSynchronizer.OnSynchronized -= AnimeSynchronizer_OnSynchronized;
     }
 
-    public Anime? Anime { get; private set; }
+    public Anime? Anime
+    {
+        get => _anime;
+        private set => SetIfDifferent(ref _anime, value);
+    }
 
     public WebPlayerViewModel? WebPlayerViewModel
     {
@@ -58,6 +65,8 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
     }
 
     public ParameterizedCommand<NavigationItem> NavItemSelectedCommand { get; }
+
+    public DelegateCommand NavigateBackCommand { get; }
 
     public bool OpenInBrowser { get; set; }
 

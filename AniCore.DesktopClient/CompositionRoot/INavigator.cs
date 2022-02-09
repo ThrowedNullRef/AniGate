@@ -11,4 +11,6 @@ public interface INavigator
     void NavigateToAnimeImport();
 
     void NavigateToPlayer(Anime anime);
+
+    void NavigateBack();
 }
