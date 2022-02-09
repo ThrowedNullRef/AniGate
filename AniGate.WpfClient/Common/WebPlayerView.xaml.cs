@@ -72,15 +72,11 @@ namespace AniGate.WpfClient.Common
                 Content = this,
                 WindowStyle = WindowStyle.None,
                 WindowState = WindowState.Maximized,
+                Owner = Application.Current.MainWindow
             };
 
             _fullScreenWindow.KeyDown += (_, __) => ToggleFullScreen();
             _fullScreenWindow.Show();
-        }
-
-        private void FullScreenWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            ToggleFullScreen();
         }
 
         private void ExitFullScreen()
