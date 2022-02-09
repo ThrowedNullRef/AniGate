@@ -1,7 +1,7 @@
 ﻿using AniCore.Core;
 using AniCore.Core.AnimeSynchronization;
 using AniCore.Core.DataAccess;
-using AniCore.WpfClient.CompositionRoot;
+using AniCore.WpfClient.Common;
 using AniCore.WpfClient.FrameworkExtensions;
 using MaterialDesignExtensions.Model;
 using System;
@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace AniCore.WpfClient.Animes;
 
@@ -17,21 +16,14 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
 {
     private readonly Func<IAnimePlayerSession> _createSession;
     private readonly IAnimeSynchronizer _animeSynchronizer;
-    private readonly MainWindow _mainWindow;
     private List<INavigationItem> _episodeItems = new ();
     private Episode? _currentEpisode;
-    private bool _isFullScreen;
-    private double _mainMargin = 40;
-    private int _playerColumnSpan = 1;
-    private int _playerColumn = 1;
-    private int _playerRowSpan = 1;
-    private int _playerRow = 1;
+    private WebPlayerViewModel? _webPlayerViewModel;
 
-    public AnimePlayerViewModel(Func<IAnimePlayerSession> createSession, IAnimeSynchronizer animeSynchronizer, MainWindow mainWindow)
+    public AnimePlayerViewModel(Func<IAnimePlayerSession> createSession, IAnimeSynchronizer animeSynchronizer)
     {
         _createSession = createSession;
         _animeSynchronizer = animeSynchronizer;
-        _mainWindow = mainWindow;
         NavItemSelectedCommand = new ParameterizedCommand<NavigationItem>(OnNavItemSelected);
         animeSynchronizer.OnSynchronized += AnimeSynchronizer_OnSynchronized;
     }
@@ -43,6 +35,12 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
 
     public Anime? Anime { get; private set; }
 
+    public WebPlayerViewModel? WebPlayerViewModel
+    {
+        get => _webPlayerViewModel;
+        set => SetIfDifferent(ref _webPlayerViewModel, value);
+    }
+
     public List<INavigationItem> EpisodeItems
     {
         get => _episodeItems;
@@ -52,40 +50,14 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
     public Episode? CurrentEpisode
     {
         get => _currentEpisode;
-        set => SetIfDifferent(ref _currentEpisode, value);
+        set
+        {
+            SetIfDifferent(ref _currentEpisode, value);
+            WebPlayerViewModel = value is not null ? new WebPlayerViewModel(new Uri(value.VoeLink)) : null;
+        }
     }
 
     public ParameterizedCommand<NavigationItem> NavItemSelectedCommand { get; }
-
-    public double MainMargin
-    {
-        get => _mainMargin;
-        set => SetIfDifferent(ref _mainMargin, value);
-    }
-
-    public int PlayerColumnSpan
-    {
-        get => _playerColumnSpan;
-        set => SetIfDifferent(ref _playerColumnSpan, value);
-    }
-
-    public int PlayerColumn
-    {
-        get => _playerColumn;
-        set => SetIfDifferent(ref _playerColumn, value);
-    }
-
-    public int PlayerRow
-    {
-        get => _playerRow;
-        set => SetIfDifferent(ref _playerRow, value);
-    }
-
-    public int PlayerRowSpan
-    {
-        get => _playerRowSpan;
-        set => SetIfDifferent(ref _playerRowSpan, value);
-    }
 
     public bool OpenInBrowser { get; set; }
 
@@ -136,7 +108,7 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
         await session.SaveChangesAsync();
     }
 
-    private async void AnimeSynchronizer_OnSynchronized(List<Anime> obj)
+    private void AnimeSynchronizer_OnSynchronized(List<Anime> obj)
     {
         if (Anime is null)
             return;
@@ -150,17 +122,4 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
            Label = episode.ToString(),
            IsSelected = isSelected
        };
-
-    public void ToggleFullScreen()
-    {
-        var isFullScreen = !_isFullScreen;
-        MainMargin = isFullScreen ? 00.0 : 40.0;
-        PlayerColumn = isFullScreen ? 0 : 1;
-        PlayerColumnSpan = isFullScreen ? 2 : 1;
-        PlayerRow = isFullScreen ? 0 : 1;
-        PlayerRowSpan = isFullScreen ? 2 : 1;
-        _mainWindow.WindowState = isFullScreen ? WindowState.Maximized: WindowState.Normal;
-        ((MainWindowViewModel)_mainWindow.DataContext).IsContentFullScreen = isFullScreen;
-        _isFullScreen = isFullScreen;
-    }
 }

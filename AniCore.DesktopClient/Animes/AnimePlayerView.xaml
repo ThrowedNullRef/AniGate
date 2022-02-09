@@ -7,11 +7,12 @@
              xmlns:animes="clr-namespace:AniCore.WpfClient.Animes"
              xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:common="clr-namespace:AniCore.WpfClient.Common"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=animes:AnimePlayerViewModel, IsDesignTimeCreatable=False}">
 
-    <Grid Margin="{Binding MainMargin}">
+    <Grid Margin="40">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition  />
@@ -37,26 +38,23 @@
                       Margin="16 0 0 0"/>
 
             <TextBlock Grid.Column="1"
-                       Text="{Binding Anime.OriginalName}"
+                       Text="{Binding Anime.OriginalName, FallbackValue=''}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        FontWeight="Bold"
                        FontSize="18"/>
         </Grid>
 
-        <Grid Background="{StaticResource MaterialDesignDarkSeparatorBackground}"
-              Grid.Row="1">
+        <Grid Grid.Column="0" 
+              Grid.Row="1" 
+              Background="{StaticResource MaterialDesignDarkSeparatorBackground}">
             <mde:SideNavigation Items="{Binding EpisodeItems, Mode=OneWay}"
                                 NavigationItemSelectedCommand="{Binding NavItemSelectedCommand, Mode=OneTime}"/>
         </Grid>
 
-        <Grid Grid.Column="{Binding PlayerColumn}" 
-              Grid.Row="{Binding PlayerRow}"
-              Grid.ColumnSpan="{Binding PlayerColumnSpan}"
-              Grid.RowSpan="{Binding PlayerRowSpan}">
-            <wv2:WebView2 Name="WebView"
-                          Source="{Binding CurrentEpisode.VoeLink, Mode=OneWay, FallbackValue='', TargetNullValue={x:Static sys:String.Empty}}" 
-                          />
+        <Grid Grid.Column="1" 
+              Grid.Row="1">
+            <common:WebPlayerView DataContext="{Binding WebPlayerViewModel, Mode=OneWay}"/>
         </Grid>
     </Grid>
 </UserControl>

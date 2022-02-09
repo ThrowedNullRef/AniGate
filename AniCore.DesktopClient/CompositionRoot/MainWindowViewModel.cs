@@ -21,7 +21,6 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
     private readonly IAnimeSynchronizer _animeSynchronizer;
 
     private object? _currentView;
-    private bool _isContentFullScreen;
 
     public MainWindowViewModel(IServiceFactory container, IAnimeSynchronizer animeSynchronizer)
     {
@@ -67,12 +66,6 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
     }
 
     public bool IsSynchronizing => _animeSynchronizer.IsSynchronizing;
-
-    public bool IsContentFullScreen
-    {
-        get => _isContentFullScreen;
-        set => SetIfDifferent(ref _isContentFullScreen, value);
-    }
 
     public DelegateCommand RefreshAnimesCommand { get; }
 
