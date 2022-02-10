@@ -5,21 +5,16 @@ namespace AniGate.Core.AnimeProviders;
 
 public sealed class AnimeToastAnimeProvider : IAnimeProvider
 {
-    private readonly Dictionary<string, IHtmlDocument?> _htmlDocumentsByUrl = new ();
     private readonly HttpClient _httpClient = new ();
     private readonly HtmlParser _htmlParser = new ();
 
     private async Task<IHtmlDocument?> ReadHtmlDocumentAsync(Uri url)
     {
-        if (_htmlDocumentsByUrl.TryGetValue(url.ToString(), out var cachedHtml))
-            return cachedHtml;
-
         try
         {
             var response = await _httpClient.GetAsync(url);
             var html = await response.Content.ReadAsStringAsync();
             var document = _htmlParser.ParseDocument(html);
-            _htmlDocumentsByUrl[url.ToString()] = document;
             return document;
         }
         catch
@@ -64,6 +59,9 @@ public sealed class AnimeToastAnimeProvider : IAnimeProvider
             {
                 var vowGroupLink = firstVoeElement.GetAttribute("href");
                 var voeGroupDoc = await ReadHtmlDocumentAsync(new Uri(vowGroupLink!));
+                if (voeGroupDoc is null)
+                    return new ();
+
                 var linkToEpisodes = voeGroupDoc.ReadPlayerLink();
                 return await ReadEpisodesAsync(linkToEpisodes!);
             }

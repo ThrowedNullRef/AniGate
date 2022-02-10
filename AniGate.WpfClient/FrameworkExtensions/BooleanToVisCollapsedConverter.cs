@@ -19,9 +19,12 @@ public sealed class BooleanToCustomVisibilityConverter : IValueConverter
 
     public Visibility FalseValue { get; set; }
 
-    public object Convert(object value, Type targetType,
+    public object Convert(object? value, Type targetType,
                           object parameter, CultureInfo culture)
     {
+        if (value is null)
+            return false;
+
         if (value is not bool b)
             return FalseValue;
 

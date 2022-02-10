@@ -9,7 +9,7 @@ public sealed class AnimeSynchronizer : IAnimeSynchronizer
     private readonly Func<IAnimeProvider> _createAnimeProvider;
     private readonly System.Timers.Timer _syncTimer = new ()
     {
-        Interval = TimeSpan.FromMinutes(5).TotalMilliseconds,
+        Interval = TimeSpan.FromSeconds(60).TotalMilliseconds,
         AutoReset = true
     };
 
@@ -19,6 +19,7 @@ public sealed class AnimeSynchronizer : IAnimeSynchronizer
     {
         _createSession = createSession;
         _createAnimeProvider = createAnimeProvider;
+        _syncTimer.Elapsed += async (_, __) => await SynchronizeAsync();
     }
 
     public bool IsSynchronizing
@@ -56,12 +57,19 @@ public sealed class AnimeSynchronizer : IAnimeSynchronizer
 
             foreach (var anime in animes)
             {
-                var actualAnime = actualAnimes.First(aa => aa.SourceUrl == anime.SourceUrl);
-                anime.UpdateFrom(actualAnime);
+                var actualAnime = actualAnimes.FirstOrDefault(aa => aa.SourceUrl == anime.SourceUrl);
+                if (actualAnime is not null)
+                {
+                    anime.UpdateFrom(actualAnime);
+                }
             }
 
             await session.SaveChangesAsync();
             OnSynchronized?.Invoke(new List<Anime>());
+        }
+        catch (Exception e)
+        {
+
         }
         finally
         {

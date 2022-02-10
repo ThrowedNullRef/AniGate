@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using AniGate.Core;
 using AniGate.Core.AnimeSynchronization;
 using AniGate.Core.DataAccess;
@@ -10,6 +11,7 @@ using AniGate.WpfClient.Common;
 using AniGate.WpfClient.CompositionRoot;
 using AniGate.WpfClient.FrameworkExtensions;
 using MaterialDesignExtensions.Model;
+using MaterialDesignThemes.Wpf;
 
 namespace AniGate.WpfClient.Animes;
 
@@ -17,16 +19,21 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
 {
     private readonly Func<IAnimePlayerSession> _createSession;
     private readonly IAnimeSynchronizer _animeSynchronizer;
-    private List<INavigationItem> _episodeItems = new ();
+    private List<FirstLevelNavigationItem> _episodeItems = new ();
     private Episode? _currentEpisode;
     private WebPlayerViewModel? _webPlayerViewModel;
     private Anime? _anime;
+    private FirstLevelNavigationItem? _currentEpisodeItem;
 
     public AnimePlayerViewModel(Func<IAnimePlayerSession> createSession, IAnimeSynchronizer animeSynchronizer, INavigator navigator)
     {
         _createSession = createSession;
         _animeSynchronizer = animeSynchronizer;
         NavigateBackCommand = new DelegateCommand(navigator.NavigateBack);
+        ToggleWatchedCommand = new DelegateCommand(ToggleCurrentEpisodeWatchedStatusAsync, () => CurrentEpisode is not null);
+        PreviousEpisodeCommand = new DelegateCommand(PreviousEpisode, () => CurrentEpisode?.Position != 0);
+        NextEpisodeCommand = new DelegateCommand(NextEpisode, () => CurrentEpisode?.Position != Anime?.Episodes.Max(e => e.Position));
+        OpenInBrowserCommand = new DelegateCommand(() => CurrentEpisode?.OpenInBrowser(), () => CurrentEpisode is not null);
         NavItemSelectedCommand = new ParameterizedCommand<NavigationItem>(OnNavItemSelected);
         animeSynchronizer.OnSynchronized += AnimeSynchronizer_OnSynchronized;
     }
@@ -48,11 +55,18 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
         set => SetIfDifferent(ref _webPlayerViewModel, value);
     }
 
-    public List<INavigationItem> EpisodeItems
+    public List<FirstLevelNavigationItem> EpisodeItems
     {
         get => _episodeItems;
         private set => SetIfDifferent(ref _episodeItems, value);
     }
+
+    public FirstLevelNavigationItem? CurrentEpisodeItem
+    {
+        get => _currentEpisodeItem;
+        set => SetIfDifferent(ref _currentEpisodeItem, value);
+    }
+
 
     public Episode? CurrentEpisode
     {
@@ -60,7 +74,14 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
         set
         {
             SetIfDifferent(ref _currentEpisode, value);
-            WebPlayerViewModel = value is not null ? new WebPlayerViewModel(new Uri(value.VoeLink)) : null;
+            if (value is not null)
+                WebPlayerViewModel = new WebPlayerViewModel(new Uri(value.VoeLink));
+
+            NextEpisodeCommand.RaiseCanExecuteChanged();
+            PreviousEpisodeCommand.RaiseCanExecuteChanged();
+            ToggleWatchedCommand.RaiseCanExecuteChanged();
+            OpenInBrowserCommand.RaiseCanExecuteChanged();
+            CurrentEpisodeItem = EpisodeItems.FirstOrDefault(ei => ei.Label == value?.ToString());
         }
     }
 
@@ -68,67 +89,109 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
 
     public DelegateCommand NavigateBackCommand { get; }
 
-    public bool OpenInBrowser { get; set; }
+    public DelegateCommand ToggleWatchedCommand { get; }
 
-    public async Task LoadAnimeAsync(string animeId)
+    public DelegateCommand PreviousEpisodeCommand { get; }
+
+    public DelegateCommand NextEpisodeCommand { get; }
+
+    public DelegateCommand OpenInBrowserCommand { get; }
+
+    public async Task LoadAnimeAsync(string animeId, bool tryKeepSelectedPosition = false)
     {
+        int? wantedSelectionPos = tryKeepSelectedPosition && CurrentEpisode is not null ? CurrentEpisode.Position : null;
+
         using var session = _createSession();
         CurrentEpisode = null;
         Anime = await session.GetAnimeAsync(animeId);
-        var orderedEpisodes = Anime.Episodes.OrderBy(e => e.Position).ToList();
-        EpisodeItems = orderedEpisodes.Select(episode => ConvertEpisodeToNavItem(episode, false)).ToList();
-    }
 
-    private async void OnNavItemSelected(NavigationItem? item)
-    {
-        if (Anime is null || item is null)
-            return;
-
-        CurrentEpisode = Anime.Episodes.First(e => e.ToString() == item.Label);
-
-        if (OpenInBrowser)
+        var foundSelection = false;
+        var newEpisodeItems = new List<FirstLevelNavigationItem>(Anime.Episodes.Count);
+        foreach (var episode in Anime.Episodes.OrderBy(e => e.Position))
         {
-            OpenCurrentEpisodeInBrowser(Anime.Id);
+            var item = new FirstLevelNavigationItem
+            {
+                Label = episode.ToString(),
+                IsSelected = !foundSelection && !wantedSelectionPos.HasValue && !episode.IsWatched || 
+                             !foundSelection && wantedSelectionPos.HasValue && episode.Position == wantedSelectionPos,
+                Icon = episode.IsWatched ? PackIconKind.EyeCheck : PackIconKind.Eye,
+            };
+
+            if (item.IsSelected)
+                foundSelection = true;
+
+            newEpisodeItems.Add(item);
         }
 
-        await MarkEpisodeAsWatchedAsync(Anime.Id, CurrentEpisode.Position);
+        if (!foundSelection && newEpisodeItems.Any())
+            newEpisodeItems.First().IsSelected = true;
+
+        EpisodeItems = newEpisodeItems;
     }
 
-    private void OpenCurrentEpisodeInBrowser(string animeId)
+    private void OnNavItemSelected(NavigationItem? item)
+    {
+        if (item is null)
+            return;
+
+        CurrentEpisode = Anime?.Episodes.First(e => e.ToString() == item.Label);
+    }
+
+    private async void ToggleCurrentEpisodeWatchedStatusAsync()
     {
         if (CurrentEpisode is null)
             return;
 
-        Process.Start(new ProcessStartInfo(CurrentEpisode.VoeLink)
-        {
-            UseShellExecute = true
-        });
+        await UpdateCurrentEpisodeWatchedStatus(!CurrentEpisode.IsWatched);
     }
 
-    private async Task MarkEpisodeAsWatchedAsync(string animeId, int episodePos)
+    private async void NextEpisode()
     {
-        using var session = _createSession();
-        var anime = await session.GetAnimeAsync(animeId);
-        var watchedEpisode = anime.Episodes.FirstOrDefault(e => e.Position == episodePos);
-        if (watchedEpisode == null || watchedEpisode.IsWatched)
+        if (CurrentEpisode is null || Anime is null)
             return;
 
-        watchedEpisode.IsWatched = true;
-        await session.SaveChangesAsync();
+        await UpdateCurrentEpisodeWatchedStatus(true);
+
+        var nextEpisode = Anime.Episodes.FirstOrDefault(e => e.Position == CurrentEpisode.Position + 1);
+        if (nextEpisode is null)
+            return;
+
+        CurrentEpisode = nextEpisode;
     }
 
-    private void AnimeSynchronizer_OnSynchronized(List<Anime> obj)
+    private void PreviousEpisode()
+    {
+        if (CurrentEpisode is null || Anime is null)
+            return;
+
+        var previousEpisode = Anime.Episodes.FirstOrDefault(e => e.Position == CurrentEpisode.Position - 1);
+        if (previousEpisode is null)
+            return;
+
+        CurrentEpisode = previousEpisode;
+    }
+
+    private async Task UpdateCurrentEpisodeWatchedStatus(bool isWatched)
+    {
+        if (CurrentEpisode is null || Anime is null)
+            return;
+
+        using var session = _createSession();
+        var anime = await session.GetAnimeAsync(Anime.Id);
+        var watchedEpisode = anime.Episodes.FirstOrDefault(e => e.Position == CurrentEpisode.Position);
+        if (watchedEpisode == null || watchedEpisode.IsWatched == isWatched)
+            return;
+
+        watchedEpisode.IsWatched = isWatched;
+        await session.SaveChangesAsync();
+        await LoadAnimeAsync(Anime.Id, true);
+    }
+
+    private async void AnimeSynchronizer_OnSynchronized(List<Anime> obj)
     {
         if (Anime is null)
             return;
 
-        //await LoadAnimeAsync(Anime.Id);
+        await Application.Current.Dispatcher.BeginInvoke(async () => await LoadAnimeAsync(Anime.Id, true));
     }
-
-    private static INavigationItem ConvertEpisodeToNavItem(Episode episode, bool isSelected) =>
-       new FirstLevelNavigationItem
-       {
-           Label = episode.ToString(),
-           IsSelected = isSelected
-       };
 }

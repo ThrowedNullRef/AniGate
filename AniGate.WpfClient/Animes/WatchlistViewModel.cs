@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using AniGate.Core;
 using AniGate.Core.AnimeSynchronization;
 using AniGate.Core.DataAccess;
@@ -74,6 +75,6 @@ public sealed class WatchlistViewModel : BaseNotifyPropertyChanged
 
     private async void AnimeSynchronizer_OnSynchronized(List<Anime> obj)
     {
-        await ReloadAsync();
+        await Application.Current.Dispatcher.BeginInvoke(async () => await ReloadAsync());
     }
 }
