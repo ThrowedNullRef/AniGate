@@ -124,8 +124,8 @@
                     <Grid Grid.Row="1">
                         <ScrollViewer>
                             <mde:SideNavigation Items="{Binding EpisodeItems, Mode=OneWay}"
-                                            NavigationItemSelectedCommand="{Binding NavItemSelectedCommand, Mode=OneTime}"
-                                            SelectedItem="{Binding CurrentEpisodeItem, Mode=TwoWay}"
+                                                NavigationItemSelectedCommand="{Binding NavItemSelectedCommand, Mode=OneTime}"
+                                                SelectedItem="{Binding CurrentEpisodeItem, Mode=TwoWay}"
                         />
                         </ScrollViewer>
                         

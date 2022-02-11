@@ -67,10 +67,6 @@ public sealed class AnimeSynchronizer : IAnimeSynchronizer
             await session.SaveChangesAsync();
             OnSynchronized?.Invoke(new List<Anime>());
         }
-        catch (Exception e)
-        {
-
-        }
         finally
         {
             IsSynchronizing = false;

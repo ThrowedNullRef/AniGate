@@ -17,7 +17,8 @@ public sealed class AnimeImportViewModel : BaseNotifyPropertyChanged
     {
         _createSession = createSession;
         _createAnimeProvider = createAnimeProvider;
-        ImportCommand = new DelegateCommand(ImportAnime, IsValidUrl);
+        ImportCommand = new DelegateCommand(ImportAnime, () => IsValidUrl() && !IsImporting);
+        ImportCommand.RaiseCanExecuteChanged();
     }
 
     public DelegateCommand ImportCommand { get; }
@@ -37,7 +38,11 @@ public sealed class AnimeImportViewModel : BaseNotifyPropertyChanged
     public bool IsImporting
     {
         get => _isImporting;
-        set => SetIfDifferent(ref _isImporting, value);
+        set
+        {
+            SetIfDifferent(ref _isImporting, value);
+            ImportCommand.RaiseCanExecuteChanged();
+        }
     }
 
     private async void ImportAnime()

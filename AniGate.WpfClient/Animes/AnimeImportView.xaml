@@ -5,39 +5,41 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:animes="clr-namespace:AniGate.WpfClient.Animes"
+             xmlns:mde="https://spiegelp.github.io/MaterialDesignExtensions/winfx/xaml"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance animes:AnimeImportViewModel, IsDesignTimeCreatable=False}">
     <material:Card HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Width="600">
-        <StackPanel Margin="40" 
+        <Grid>
+            <mde:BusyOverlay IsBusy="{Binding IsImporting}" />
+            <StackPanel Margin="40" 
                     Width="400">
-
-            <StackPanel Orientation="Vertical">
-                <Label Content="Anime Toast Import"
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Anime Toast Import"
                        Margin="0 0 0 20"
                        FontSize="20"
                        FontWeight="Bold"
                        />
 
-                <Label Content="Link zum Anime"/>
-                <TextBox Text="{Binding AnimeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <Label Content="Link zum Anime"/>
+                    <TextBox Text="{Binding AnimeUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="0 0 0 20"
                          />
-            </StackPanel>
-            
-            <CheckBox Content="Automatisch zur Watchlist hinzufügen"
+                </StackPanel>
+
+                <CheckBox Content="Automatisch zur Watchlist hinzufügen"
                       Margin="0 0 0 20"
                       IsChecked="{Binding ImportAnimeAsWatching, Mode=TwoWay}"
                       Cursor="Hand"
             />
-            <Button Command="{Binding ImportCommand}"
-                    IsEnabled="{Binding IsImporting, Converter={StaticResource InvertBooleanConverter}}"
-            >
-                Import
-            </Button>
+                <Button Command="{Binding ImportCommand}">
+                    Import
+                </Button>
 
-        </StackPanel>
+            </StackPanel>
+        </Grid>
+        
     </material:Card>
 </UserControl>

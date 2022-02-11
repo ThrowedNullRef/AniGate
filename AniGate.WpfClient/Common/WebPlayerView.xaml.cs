@@ -25,8 +25,12 @@ namespace AniGate.WpfClient.Common
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             WebView.CoreWebView2InitializationCompleted -= WebView_CoreWebView2InitializationCompleted;
-            WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
-            WebView.CoreWebView2.ContainsFullScreenElementChanged -= CoreWebView2_ContainsFullScreenElementChanged;
+            if (WebView.CoreWebView2 is not null)
+            {
+                WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
+                WebView.CoreWebView2.ContainsFullScreenElementChanged -= CoreWebView2_ContainsFullScreenElementChanged;
+            }
+            
             WebView.Dispose();
         }
 
