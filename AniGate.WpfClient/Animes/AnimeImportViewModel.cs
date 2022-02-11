@@ -47,7 +47,7 @@ public sealed class AnimeImportViewModel : BaseNotifyPropertyChanged
 
         try
         {
-            IsImporting = false;
+            IsImporting = true;
             using var animeProvider = _createAnimeProvider();
             var anime = await animeProvider.ReadAnimeAsync(parseUri);
             if (anime is null)
@@ -63,7 +63,7 @@ public sealed class AnimeImportViewModel : BaseNotifyPropertyChanged
         }
         finally
         {
-            IsImporting = true;
+            IsImporting = false;
         }
     }
 
