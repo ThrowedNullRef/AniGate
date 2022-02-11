@@ -6,19 +6,22 @@
              xmlns:animes="clr-namespace:AniGate.WpfClient.Animes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=local:AnimeListViewModel, IsDesignTimeCreatable=False}">
-    <WrapPanel Orientation="Horizontal">
-        <ItemsControl ItemsSource="{Binding AnimeCardViewModels}" Padding="40 0 0 0">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <animes:AnimeCardView DataContext="{Binding}" Margin="0 40 80 0 "/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </WrapPanel>
+             d:DataContext="{d:DesignInstance Type=animes:AnimeListViewModel, IsDesignTimeCreatable=False}"
+             >
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid Margin="40 0 0 40">
+                <ItemsControl ItemsSource="{Binding AnimeCardViewModels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <animes:AnimeCardView DataContext="{Binding}" Margin="0 40 80 0 "/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
 </UserControl>

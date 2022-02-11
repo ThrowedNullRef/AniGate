@@ -11,7 +11,7 @@ namespace AniGate.WpfClient.CompositionRoot
             InitializeComponent();
         }
 
-        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed)
                 return;

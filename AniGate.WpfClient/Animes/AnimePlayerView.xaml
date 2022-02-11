@@ -22,7 +22,7 @@
             <RowDefinition Height="68"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-
+    
         <Border Grid.Row="0"
                 CornerRadius="8"
                 BorderThickness="8"
@@ -122,10 +122,13 @@
                     </Border>
 
                     <Grid Grid.Row="1">
-                        <mde:SideNavigation Items="{Binding EpisodeItems, Mode=OneWay}"
+                        <ScrollViewer>
+                            <mde:SideNavigation Items="{Binding EpisodeItems, Mode=OneWay}"
                                             NavigationItemSelectedCommand="{Binding NavItemSelectedCommand, Mode=OneTime}"
                                             SelectedItem="{Binding CurrentEpisodeItem, Mode=TwoWay}"
                         />
+                        </ScrollViewer>
+                        
                     </Grid>
                 </Grid>
                

@@ -120,13 +120,11 @@
                                     />
             </Grid>
 
-            <ScrollViewer Grid.Column="1"
-                      Grid.Row="0"
-                      HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto"
-                      >
+            <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  >
                 <ContentControl Content="{Binding CurrentView}"/>
-            </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
