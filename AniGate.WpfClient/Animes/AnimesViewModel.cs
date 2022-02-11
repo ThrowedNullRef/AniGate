@@ -33,11 +33,6 @@ public sealed class AnimesViewModel : BaseNotifyPropertyChanged
         _animeSynchronizer.OnSynchronized += AnimeSynchronizer_OnSynchronized;
     }
 
-    ~AnimesViewModel()
-    {
-        _animeSynchronizer.OnSynchronized -= AnimeSynchronizer_OnSynchronized;
-    }
-
     public AnimeListViewModel AnimeListViewModel { get; }
 
     private async void Initialize()

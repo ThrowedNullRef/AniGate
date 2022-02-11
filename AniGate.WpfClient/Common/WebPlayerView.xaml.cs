@@ -16,19 +16,18 @@ namespace AniGate.WpfClient.Common
             WebView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
         }
 
-        ~WebPlayerView()
-        {
-            WebView.CoreWebView2InitializationCompleted -= WebView_CoreWebView2InitializationCompleted;
-            if (WebView.CoreWebView2 is null)
-                return;
-
-            WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
-        }
-
         private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
         {
             WebView.CoreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
             WebView.CoreWebView2.ContainsFullScreenElementChanged += CoreWebView2_ContainsFullScreenElementChanged;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WebView.CoreWebView2InitializationCompleted -= WebView_CoreWebView2InitializationCompleted;
+            WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
+            WebView.CoreWebView2.ContainsFullScreenElementChanged -= CoreWebView2_ContainsFullScreenElementChanged;
+            WebView.Dispose();
         }
 
         private void CoreWebView2_NewWindowRequested(object? sender, CoreWebView2NewWindowRequestedEventArgs e)

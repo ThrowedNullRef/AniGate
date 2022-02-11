@@ -32,11 +32,6 @@ public sealed class WatchlistViewModel : BaseNotifyPropertyChanged
         Initialize();
     }
    
-    ~WatchlistViewModel()
-    {
-        _animeSynchronizer.OnSynchronized -= AnimeSynchronizer_OnSynchronized;
-    }
-
     public AnimeListViewModel AnimeListViewModel { get; }
 
     private async void Initialize()

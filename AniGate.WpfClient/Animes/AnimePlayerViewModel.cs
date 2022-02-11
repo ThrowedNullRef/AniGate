@@ -19,6 +19,7 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
 {
     private readonly Func<IAnimePlayerSession> _createSession;
     private readonly IAnimeSynchronizer _animeSynchronizer;
+    private readonly INavigator _navigator;
     private List<FirstLevelNavigationItem> _episodeItems = new ();
     private Episode? _currentEpisode;
     private WebPlayerViewModel? _webPlayerViewModel;
@@ -29,6 +30,7 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
     {
         _createSession = createSession;
         _animeSynchronizer = animeSynchronizer;
+        _navigator = navigator;
         NavigateBackCommand = new DelegateCommand(navigator.NavigateBack);
         ToggleWatchedCommand = new DelegateCommand(ToggleCurrentEpisodeWatchedStatusAsync, () => CurrentEpisode is not null);
         PreviousEpisodeCommand = new DelegateCommand(PreviousEpisode, () => CurrentEpisode?.Position != 0);
@@ -36,11 +38,7 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
         OpenInBrowserCommand = new DelegateCommand(() => CurrentEpisode?.OpenInBrowser(), () => CurrentEpisode is not null);
         NavItemSelectedCommand = new ParameterizedCommand<NavigationItem>(OnNavItemSelected);
         animeSynchronizer.OnSynchronized += AnimeSynchronizer_OnSynchronized;
-    }
-
-    ~AnimePlayerViewModel()
-    {
-        _animeSynchronizer.OnSynchronized -= AnimeSynchronizer_OnSynchronized;
+        navigator.OnNavigated += Navigator_OnNavigated;
     }
 
     public Anime? Anime
@@ -48,25 +46,6 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
         get => _anime;
         private set => SetIfDifferent(ref _anime, value);
     }
-
-    public WebPlayerViewModel? WebPlayerViewModel
-    {
-        get => _webPlayerViewModel;
-        set => SetIfDifferent(ref _webPlayerViewModel, value);
-    }
-
-    public List<FirstLevelNavigationItem> EpisodeItems
-    {
-        get => _episodeItems;
-        private set => SetIfDifferent(ref _episodeItems, value);
-    }
-
-    public FirstLevelNavigationItem? CurrentEpisodeItem
-    {
-        get => _currentEpisodeItem;
-        set => SetIfDifferent(ref _currentEpisodeItem, value);
-    }
-
 
     public Episode? CurrentEpisode
     {
@@ -83,6 +62,24 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
             OpenInBrowserCommand.RaiseCanExecuteChanged();
             CurrentEpisodeItem = EpisodeItems.FirstOrDefault(ei => ei.Label == value?.ToString());
         }
+    }
+
+    public List<FirstLevelNavigationItem> EpisodeItems
+    {
+        get => _episodeItems;
+        private set => SetIfDifferent(ref _episodeItems, value);
+    }
+
+    public FirstLevelNavigationItem? CurrentEpisodeItem
+    {
+        get => _currentEpisodeItem;
+        set => SetIfDifferent(ref _currentEpisodeItem, value);
+    }
+
+    public WebPlayerViewModel? WebPlayerViewModel
+    {
+        get => _webPlayerViewModel;
+        set => SetIfDifferent(ref _webPlayerViewModel, value);
     }
 
     public ParameterizedCommand<NavigationItem> NavItemSelectedCommand { get; }
@@ -193,5 +190,14 @@ public sealed class AnimePlayerViewModel : BaseNotifyPropertyChanged
             return;
 
         await Application.Current.Dispatcher.BeginInvoke(async () => await LoadAnimeAsync(Anime.Id, true));
+    }
+
+    private void Navigator_OnNavigated(object? view)
+    {
+        if (view is AnimePlayerView animePlayer && animePlayer.DataContext == this)
+            return;
+
+        _navigator.OnNavigated -= Navigator_OnNavigated;
+        _animeSynchronizer.OnSynchronized -= AnimeSynchronizer_OnSynchronized;
     }
 }

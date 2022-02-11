@@ -1,4 +1,5 @@
-﻿using AniGate.Core;
+﻿using System;
+using AniGate.Core;
 
 namespace AniGate.WpfClient.CompositionRoot;
 
@@ -13,4 +14,7 @@ public interface INavigator
     void NavigateToPlayer(Anime anime);
 
     void NavigateBack();
+
+
+    event Action<object?> OnNavigated;
 }

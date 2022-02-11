@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AniGate.Core;
 using AniGate.Core.AnimeSynchronization;
@@ -61,16 +62,19 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
 
     public DelegateCommand RefreshAnimesCommand { get; }
 
-    public void NavigateToWatchlist() =>
-        CurrentView = _container.GetInstance<WatchlistView>();
-
-    public void NavigateToAnimes() =>
-        CurrentView = _container.GetInstance<AnimesView>();
-
-    public void NavigateToAnimeImport()
+    private void NavigateTo<TView>(string viewKey, TView? view = null)
+        where TView : class
     {
-        CurrentView = _container.GetInstance<AnimeImportView>();
+        _previousViewKey = viewKey;
+        CurrentView = view ?? _container.GetInstance<TView>();
+        OnNavigated?.Invoke(CurrentView);
     }
+
+    public void NavigateToWatchlist() => NavigateTo<WatchlistView>(NavigationTarget.WatchListKey);
+
+    public void NavigateToAnimes() => NavigateTo<AnimesView>(NavigationTarget.AnimesKey);
+
+    public void NavigateToAnimeImport() => NavigateTo<AnimeImportView>(NavigationTarget.AnimeImportKey);
 
     public async void NavigateToPlayer(Anime anime)
     {
@@ -86,8 +90,9 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
             return;
 
         NavigateByKey(_previousViewKey);
-        _previousViewKey = null;
     }
+
+    public event Action<object?>? OnNavigated;
 
     private void NavigateByKey(string key)
     {
@@ -103,7 +108,5 @@ public sealed class MainWindowViewModel : BaseNotifyPropertyChanged, INavigator
                 NavigateToAnimeImport();
                 break;
         }
-
-        _previousViewKey = key;
     }
 }
