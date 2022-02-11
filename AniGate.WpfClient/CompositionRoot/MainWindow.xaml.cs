@@ -24,14 +24,29 @@ namespace AniGate.WpfClient.CompositionRoot
             {
                 if (Application.Current.MainWindow?.WindowState == WindowState.Maximized)
                 {
+                    var windowPosition = e.GetPosition(this);
+                    var screenPosition = PointToScreen(windowPosition);
+
                     Application.Current.MainWindow.WindowState = WindowState.Normal;
-                    var mousePos = e.GetPosition(this);
-                    Application.Current.MainWindow.Left = mousePos.X - Application.Current.MainWindow.Width / 2.0;
-                    Application.Current.MainWindow.Top = mousePos.Y - 20.0;
+
+                    Application.Current.MainWindow.Left = screenPosition.X - Application.Current.MainWindow.Width / 2.0;
+                    Application.Current.MainWindow.Top = 0;
                 }
 
                 DragMove();
             }
+        }
+
+        private static void SwitchWindowState()
+        {
+            if (Application.Current.MainWindow is null)
+                return;
+
+            Application.Current.MainWindow.WindowState = Application.Current.MainWindow?.WindowState switch
+            {
+                WindowState.Maximized => WindowState.Normal,
+                WindowState.Normal => WindowState.Maximized,
+            };
         }
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
@@ -47,22 +62,5 @@ namespace AniGate.WpfClient.CompositionRoot
 
         private void Close_Click(object sender, RoutedEventArgs e) =>
             Application.Current?.Shutdown();
-
-        private static void SwitchWindowState()
-        {
-            if (Application.Current.MainWindow is null)
-                return;
-
-            Application.Current.MainWindow.WindowState = Application.Current.MainWindow?.WindowState switch
-            {
-                WindowState.Maximized => WindowState.Normal,
-                WindowState.Normal => WindowState.Maximized,
-            };
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            BorderThickness = WindowState == WindowState.Maximized ? new Thickness(8) : new Thickness(0);
-        }
     }
 }

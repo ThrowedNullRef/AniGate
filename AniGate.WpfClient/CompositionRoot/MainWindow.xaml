@@ -21,7 +21,6 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         d:DataContext="{d:DesignInstance Type=compositionRoot:MainWindowViewModel, IsDesignTimeCreatable=False}"
-        SizeChanged="Window_SizeChanged"
         >
     <Grid>
         <Grid.RowDefinitions>
