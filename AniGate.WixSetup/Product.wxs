@@ -1,0 +1,1024 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" 
+	         Name="AniGate" 
+	         Language="1033" 
+	         Version="1.0.0" 
+	         Manufacturer="ThrowedNull" 
+	         UpgradeCode="0b954caa-f13d-4610-b378-09d4699eeb75"
+	         >
+		<Package InstallerVersion="301" 
+		         Compressed="yes" 
+		         InstallScope="perMachine"
+				 Manufacturer="ThrowedNull"
+				 Description="Installs AniGate"
+				 Keywords="Installer,MSI"
+				 Comments="AniGate is a software that simplifies watching animes"
+		         />
+
+		<MediaTemplate EmbedCab="yes" />
+
+		<!--<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />-->
+
+		<Feature Id="AniGateFeature" Title="AniGate" Level="1">
+			<ComponentGroupRef Id="AniGateComponentGroup" />
+			<ComponentRef Id="AppShortcutComponent"/>
+		</Feature>
+	</Product>
+
+	<!--Known Directories-->
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="AppShortcutFolder" Name="AniGate" />
+			</Directory>
+			<Directory Id="WindowsVolume">
+				<Directory Id="InstallFolder" Name="AniGate" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<!--App StartMenu -->
+	<Fragment>
+		<DirectoryRef Id="AppShortcutFolder">
+			<Component Id="AppShortcutComponent" Guid="bcc3ca85-271f-49cb-8b52-2208ffeeb5eb">
+				<Shortcut Id="AppShortcut"
+						  Name="AniGate"
+						  Description="An application to simplify watching animes"
+						  Target="[InstallFolder]AniGate.WpfClient.exe" />
+				<RemoveFolder Id="CleanupAppShortcut" Directory="AppShortcutFolder" On="uninstall"/>
+				<RegistryValue Root="HKCU" Key="Software\ThrowedNull\AniGate" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+
+	<!--Application Components-->
+	<Fragment>
+		<DirectoryRef Id="InstallFolder">
+			<Directory Id="dir59276917AB53DAC79170759082206D68" Name="ar-DZ" />
+			<Directory Id="dirB15F4604371D144EAEEAD44FE901D873" Name="cs" />
+			<Directory Id="dir685A0806E2E8E14FA0BEED541D816845" Name="cs-CZ" />
+			<Directory Id="dir242DC17B8DFC53C13CAF172FC08B730A" Name="de" />
+			<Directory Id="dirB55DFDA91FEE7CCCBC65CA7493B75748" Name="fr" />
+			<Directory Id="dir83A5A46E4C0778C480C853AB49248682" Name="fr-FR" />
+			<Directory Id="dir8606A94F8723F2ACAF42032E593433C7" Name="pt" />
+			<Directory Id="dir339F53F3A11C56B053FD1FEC9B438810" Name="pt-BR" />
+			<Directory Id="dir5F46F574D49F552B476846BBE07EFBE3" Name="RavenDBServer" />
+			<Directory Id="dirE7B4A6F2DD043E7C7ECBDE7B89C02FF1" Name="ref" />
+			<Directory Id="dir41772C233BE465DE0D167364B3BB566C" Name="Resources" />
+			<Directory Id="dir56F74B384CB12C6A76741FDC9CE91D35" Name="Ru" />
+			<Directory Id="dir033DCB4BBD7B9101BEF7C829C5BE9477" Name="ru-ru" />
+			<Directory Id="dir58E8247E2885C01898CAD009F9EFD8BA" Name="runtimes" />
+			<Directory Id="dir598534A9A725378241C7A1558C1841A7" Name="uz-Latn-UZ" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<ComponentGroup Id="AniGateComponentGroup">
+			<Component Id="cmp9B28032C37E16B28FD1E09F2B2637195" Directory="InstallFolder" Guid="{FDF2993B-0F8B-487C-A8FF-F3BDCE27BB4A}">
+				<File Id="fil5DB151349E04F3E95A05E5CAC97DDF1C" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AngleSharp.dll" />
+			</Component>
+			<Component Id="cmp4E865917DC9C88C006EF7C769ECCD9EB" Directory="InstallFolder" Guid="{0C83E2B7-CAE5-4D0E-82F3-A8870C7BFD53}">
+				<File Id="fil03D0A80A8AD1DBC7881865CB992D2ABB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.Core.dll" />
+			</Component>
+			<Component Id="cmp56ED846E51F34D19B2E1E292D3767B11" Directory="InstallFolder" Guid="{474AA0F7-BABB-4972-A51E-90D2BD67B670}">
+				<File Id="fil00B4382D056C85E2E1E1A6672F1E219D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.Core.pdb" />
+			</Component>
+			<Component Id="cmp28E79F123171F298585606D9EC5E8155" Directory="InstallFolder" Guid="{450AC478-0C86-4A80-A09B-5E6A9E74ED25}">
+				<File Id="filD319DF3252183A54B91357FEAAB1AA99" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.RavenDataAccess.dll" />
+			</Component>
+			<Component Id="cmp285646A8E28079E4EF5A7018DF1EBDFB" Directory="InstallFolder" Guid="{95D8FDFE-D0BC-40B1-A2D9-D41FCB756F51}">
+				<File Id="fil634E7E6EFE3050CA41A6653985902C22" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.RavenDataAccess.pdb" />
+			</Component>
+			<Component Id="cmp69FF9CA2C02B13E6098A633501A8EFFD" Directory="InstallFolder" Guid="{7A4F18EC-8D62-48AA-85E6-E5927F7DB3CB}">
+				<File Id="filBBE61FB938B3B37A2C9CF352648D44F5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.WpfClient.deps.json" />
+			</Component>
+			<Component Id="cmpF95175B6E3E5830F16EBDF83442F3606" Directory="InstallFolder" Guid="{10E2BF67-8D19-4EBC-9340-93474677B21F}">
+				<File Id="filF31673371FB2998186CF00456057E5BD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.WpfClient.dll" />
+			</Component>
+			<Component Id="cmpC3F7D203BD87284DF38C9E7B00EA1190" Directory="InstallFolder" Guid="{04F45F0E-442B-4F4A-A11C-58A65E0F447A}">
+				<File Id="fil4D21D9670817D6F65DEE500867C0A5E4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.WpfClient.exe" />
+			</Component>
+			<Component Id="cmpFC038E2E2804762600969EE7B4B7E795" Directory="InstallFolder" Guid="{B654AF6D-D8EC-4029-93B6-C208321A1EED}">
+				<File Id="fil9B89BB9A4E415557058B065C1E03C517" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.WpfClient.pdb" />
+			</Component>
+			<Component Id="cmp133FF15A8747CAA6A6784FAA0D750BF6" Directory="InstallFolder" Guid="{42E7F875-1D9B-4DC3-B707-4F0EE240D925}">
+				<File Id="filD878C3454E771BC28F5009AAF765E746" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\AniGate.WpfClient.runtimeconfig.json" />
+			</Component>
+			<Component Id="cmp68F8588116AFB877135730584996D4E6" Directory="InstallFolder" Guid="{981B701D-E521-453D-9CDF-374642956AD0}">
+				<File Id="filCBE05DE1C82CC1A2C0AFE4034F446EF3" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Lambda2Js.Signed.dll" />
+			</Component>
+			<Component Id="cmp0BED2BE8092BE966E47FEEE13F738DDC" Directory="InstallFolder" Guid="{6C7C8BEB-6FE0-4420-9064-3649FF205438}">
+				<File Id="fil124784FA4A8E975D52AA4AAA80146885" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Light.GuardClauses.dll" />
+			</Component>
+			<Component Id="cmpBA4BA8AFC720BB3438219B850D31D6D2" Directory="InstallFolder" Guid="{0F127258-8F41-45FC-A206-6166267D77E0}">
+				<File Id="fil66F68B732E2AC16631CE3941AE09914E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\LightInject.dll" />
+			</Component>
+			<Component Id="cmpF79A41B26948F126556619AD15586E53" Directory="InstallFolder" Guid="{4361CD04-CB29-4BEA-9085-084222B7A453}">
+				<File Id="filD65CB2C411B671E247C0C842FF9ED3FA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\MaterialDesignColors.dll" />
+			</Component>
+			<Component Id="cmp0550D586A2B90D7B437A969506D79DE6" Directory="InstallFolder" Guid="{3B54B1B4-6D72-411B-9F1A-E5991EAE9D79}">
+				<File Id="fil829CF9F462E29648DB156334B379517E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\MaterialDesignExtensions.dll" />
+			</Component>
+			<Component Id="cmp6D59DB1C8695088F09FD7F0B07ECD487" Directory="InstallFolder" Guid="{8B76C0F4-2328-4401-8521-11B072BC982A}">
+				<File Id="fil13620EBEA6F6420A02C733F8682CD641" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\MaterialDesignThemes.Wpf.dll" />
+			</Component>
+			<Component Id="cmp714047D429C1D3C630FA480C3F226530" Directory="InstallFolder" Guid="{C9118B0A-0E9E-4DE2-88DA-75160AC53342}">
+				<File Id="fil57C5EC27EA94C0CD6C6A7BD044B378CD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Microsoft.AspNetCore.JsonPatch.dll" />
+			</Component>
+			<Component Id="cmp20E5A82EE1F53BB560782568696E50EF" Directory="InstallFolder" Guid="{41DB9EC1-77D3-4404-AC3B-3A732A0BEEF4}">
+				<File Id="fil2E537F5E44EFF72FBE1AF325D6F073A2" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Microsoft.Bcl.AsyncInterfaces.dll" />
+			</Component>
+			<Component Id="cmp57D856C08E480EBC080FF86FAEB1DDA3" Directory="InstallFolder" Guid="{FC5AF56D-46FF-462B-A331-FF34FAB0FE9F}">
+				<File Id="fil75A9AC5DE23858DE4AD4EE64AEAE4B4A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Microsoft.Web.WebView2.Core.dll" />
+			</Component>
+			<Component Id="cmp39AA4117FE66423F7F7B55B38D21DDEB" Directory="InstallFolder" Guid="{2ACBA721-899F-4584-8FD7-9762DEE74FF6}">
+				<File Id="fil1FD222D755CE0EA2DA473BD88AB86236" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Microsoft.Web.WebView2.WinForms.dll" />
+			</Component>
+			<Component Id="cmp52904F0CB40D279B8F2C7E92B0EFE70C" Directory="InstallFolder" Guid="{DBA17681-D124-46A2-91DB-21C768D2B292}">
+				<File Id="fil5CCB07B1FCCECF7CA118B8F160F410A7" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Microsoft.Web.WebView2.Wpf.dll" />
+			</Component>
+			<Component Id="cmpBC4FC00A26E7D32479D42D3411317FC5" Directory="InstallFolder" Guid="{4572CDE8-7DB4-45BA-A0BE-ED8362109A98}">
+				<File Id="fil90A8AAD9FC612906D405476D61CEA3F4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Newtonsoft.Json.dll" />
+			</Component>
+			<Component Id="cmp3CD4A1C4FAA9D89D775E6CAA4E81552F" Directory="InstallFolder" Guid="{72A3ED40-D3E7-45C2-9F86-D19EA1DEA8C7}">
+				<File Id="filFB17D15F3C651598F47E3B588FE7157D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Raven.Client.dll" />
+			</Component>
+			<Component Id="cmp6BD9194BE741954085FE98EB56DE4FFD" Directory="InstallFolder" Guid="{6EF4C61E-F912-4B01-BEA0-4330CB311714}">
+				<File Id="fil00A4FB6C0C90C30302A3B789285AE6CE" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Raven.Embedded.dll" />
+			</Component>
+			<Component Id="cmp39C9E8B9F53B494FFF7F68E6A20BDE65" Directory="InstallFolder" Guid="{BE606950-DDB2-4F20-82D8-80BD63ED9015}">
+				<File Id="filDC9D98876697334C6A081F74F34147C3" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Sparrow.dll" />
+			</Component>
+			<Component Id="cmp65896259F3F1DC3C2AB513FCE4683445" Directory="dir59276917AB53DAC79170759082206D68" Guid="{0B8249FB-C051-49DA-8CB9-19F3604DFD1B}">
+				<File Id="fil7D7AC0A5A6F5DED8F792D55A1D3E8BB0" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\ar-DZ\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmpD84A04FEA8E88CBCDA0B6FEFDC4B8F88" Directory="dirB15F4604371D144EAEEAD44FE901D873" Guid="{1249FD8F-824A-4EE0-9578-EB6EC9C54160}">
+				<File Id="filC0A1BF84B9A8F92198F3C480931C1EAC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\cs\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp8F5F1A4AD406E964FBAFE6C12EAA4E71" Directory="dir685A0806E2E8E14FA0BEED541D816845" Guid="{AC14E927-44A6-4BA1-A7A5-8293C986EADD}">
+				<File Id="fil88B14AD07CD3D540837028655E037B2C" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\cs-CZ\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp37D2B7896136C819DE20CDD53F8D4323" Directory="dir242DC17B8DFC53C13CAF172FC08B730A" Guid="{6D352910-FB6B-4DE6-B3C0-EDF4D5364243}">
+				<File Id="fil529D1E149847AED728C6385F9C1D43A4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\de\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp171B8A84EF0D5647295A0B9297FADDDD" Directory="dirB55DFDA91FEE7CCCBC65CA7493B75748" Guid="{808DCFB7-4A7E-434F-A48B-2E8BE231FBAB}">
+				<File Id="filA5BBB969D6528B948A6F11ED71216F00" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\fr\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp2B4882355534B69C3B55442A5C7D6EE0" Directory="dir83A5A46E4C0778C480C853AB49248682" Guid="{1BD1B62F-D28B-40AE-84C1-BF55B484F5CA}">
+				<File Id="fil2018C3072FC303AB97048C381EDFF266" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\fr-FR\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmpD39DAD35901BA63723E6C2A71062A4A8" Directory="dir8606A94F8723F2ACAF42032E593433C7" Guid="{E999EB23-39AD-49C4-A4B6-7A1E824CBB67}">
+				<File Id="fil9B8963C9F726EDF35FE1E6C4E60F73E6" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\pt\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp71F66EE6E4496BE837520F9B6CC4ACD1" Directory="dir339F53F3A11C56B053FD1FEC9B438810" Guid="{67F4A5B8-B5E0-48FB-A76B-7261E679CD95}">
+				<File Id="fil4C38170BB6DB08B448EC8C0289DD3DFB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\pt-BR\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp94F986983F264DACE988F547FF24EEB1" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{AA30DDC6-E166-4375-ACCE-F85A16E6FF13}">
+				<File Id="fil4738D2C8422CB95D10AEB46BD7B69471" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\AWSSDK.Core.dll" />
+			</Component>
+			<Component Id="cmp0EBCD966867C082D3FE77BBD1253D22C" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{854438BB-E358-47F2-A84E-E6EB51524C9E}">
+				<File Id="fil32556A26DC2BA23261638E2AC62CA44D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\AWSSDK.Glacier.dll" />
+			</Component>
+			<Component Id="cmp315025CF30C387548C3A6F192AD6445B" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{26CBCA5C-9ECD-4CD3-BDEE-564F7622BD43}">
+				<File Id="filB41C3D283567D77540F2DCCFDB4054E5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\AWSSDK.S3.dll" />
+			</Component>
+			<Component Id="cmpE9E2AEE8F1325639D87644CEB28BB2C9" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{812DD3C8-4A9E-4F74-BDAD-F5EE3F5B0E97}">
+				<File Id="fil4AF9055399A32A3A4081B2D421F9B1A2" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\AWSSDK.SimpleNotificationService.dll" />
+			</Component>
+			<Component Id="cmpC5494A1E51081AAADB9E2C74AC93ACC9" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{DFBD4A49-17BC-4B83-B356-3990759BA434}">
+				<File Id="fil65109C39186572AEC239924900F0B5A3" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\AWSSDK.SQS.dll" />
+			</Component>
+			<Component Id="cmpD4858532F1BF41948C5AB7E071F1BE17" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{2D8F5DFB-4C6A-4330-A82E-6F5F3B172582}">
+				<File Id="fil81D54482F2AA4A94975F56CD8F093800" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Azure.Core.dll" />
+			</Component>
+			<Component Id="cmpF154F8FCDB203D54A6824FC790723FBE" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{9A4B5468-CA4F-485B-BA5C-FC9C9D943E87}">
+				<File Id="filBAC4FEBFB9570302EB8836B66CA59969" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Azure.Storage.Blobs.dll" />
+			</Component>
+			<Component Id="cmpA38220D2825246EBCD8C031136C206A3" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D92047E2-3992-4EE1-B41A-4A104C412F68}">
+				<File Id="fil26781B4C7AA954D7F4316B21988A197B" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Azure.Storage.Common.dll" />
+			</Component>
+			<Component Id="cmp054044EF4123D1A7746FEE74BB430B69" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{BE89130D-31AB-4556-96E3-95D79B880654}">
+				<File Id="filA9B8E3793E6293666C6BB3D746005902" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\BouncyCastle.Crypto.dll" />
+			</Component>
+			<Component Id="cmp5AF4FC9A3A8B2353A43746D4C6EFDCB6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{8FF44439-C2BA-4695-BB8B-F9C85D08E718}">
+				<File Id="fil696BD0D1064EE0FBA663681F3128B27A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\CsvHelper.dll" />
+			</Component>
+			<Component Id="cmp1D0A1DD59E60CD5FB747506DF609D674" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{10569725-114F-4533-B0F5-3DCA128D35C2}">
+				<File Id="filD96DAB247CF7B8A4E655495AE53BD1C0" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\DasMulli.Win32.ServiceUtils.dll" />
+			</Component>
+			<Component Id="cmpA07A38B70D8057035FC6EA96EAA0B86B" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{B5FE834B-2263-42EC-94E0-122854FCE1CA}">
+				<File Id="fil3D118090A81E34BACC75E9219396B633" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Elasticsearch.Net.dll" />
+			</Component>
+			<Component Id="cmpFC69CCCC04C95BA8B439D23EF02274ED" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{E7E9289A-FEE6-46E9-8AFF-594837B1B345}">
+				<File Id="fil117A4C5CE9E3956387C5911A8A5ED0E6" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Esprima.dll" />
+			</Component>
+			<Component Id="cmp736FB82BDE618FBFFF13C66DEF6EC4DA" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{C08F7BE6-80B0-40CE-9CCE-A587AC2B1382}">
+				<File Id="fil3A26541DDBD880D41FE64B5B00591C31" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\GeoAPI.CoordinateSystems.dll" />
+			</Component>
+			<Component Id="cmpD495D4A3FA139729DBCB0A118540D9F3" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{2B5C2F5D-7536-42F8-8F2D-C7F4D3522542}">
+				<File Id="fil2DF813E0AB352DA390F3A14C183B6AD8" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\GeoAPI.dll" />
+			</Component>
+			<Component Id="cmpF6B0DCD7ECCEEF1B472D06C3D508AE0E" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F45335E7-90A2-4BD3-9E8D-745DF85291FE}">
+				<File Id="filF049DD597D7126AC9A25011E3D45219D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Api.Gax.dll" />
+			</Component>
+			<Component Id="cmp09A09DAA929B70D65320B0F83CF86D11" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{EE651B9C-0ECD-4657-845C-95B042D167D1}">
+				<File Id="filD9317A77958CCB64FA4D742B0CED7F35" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Api.Gax.Rest.dll" />
+			</Component>
+			<Component Id="cmp04F282147E7DF0C9F07BD16A572F1E86" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{0603E2CF-8BEA-40CC-8B83-222396B2A08C}">
+				<File Id="fil41C56251AEA5D04FC11A224CBE330CBA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Apis.Auth.dll" />
+			</Component>
+			<Component Id="cmp88AC74636E6AFEA892890667846971F0" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{84E5B525-B0CA-4CC6-9EE0-C8FDCE1E70D5}">
+				<File Id="filCFC263A4A6184DE5F8EFD967ED69749A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Apis.Auth.PlatformServices.dll" />
+			</Component>
+			<Component Id="cmpC5629301AA74C2B4B075EF0E127B67AF" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{9FB602C8-E166-49B6-8C82-DD1FF33B488A}">
+				<File Id="fil7A20A11E7825C18DF3CBB21BA07EF92C" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Apis.Core.dll" />
+			</Component>
+			<Component Id="cmpC352D035E2EDD7116DD7980E1FC3B2B9" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{E48A26FD-A417-4815-B92E-4B57A6ED917C}">
+				<File Id="fil635A24DB16D1E74B873B3BB9174E0620" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Apis.dll" />
+			</Component>
+			<Component Id="cmp98A58C4ABCE319D454AEE5A31DE24BF9" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{4CA206C0-2BE3-4A02-8F6D-8D734DCAC855}">
+				<File Id="fil72636AB4F7E6CDBB6E08DF0790717958" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Apis.Storage.v1.dll" />
+			</Component>
+			<Component Id="cmpDFC1654CA9872ED39DC27B4E7F74C829" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{B47C0CEF-D94B-4BF4-9E54-0C8E1D6D8A65}">
+				<File Id="filF0ABF9CBB45F1AFDB59B46143B102D33" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Cloud.Storage.V1.dll" />
+			</Component>
+			<Component Id="cmp40186D46051163C9C5BC17AEFFA4BF38" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{77ADDA72-927F-4418-B515-A58B1590003C}">
+				<File Id="filB5C3DC4957D43618CD27922DB5C11EBA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Google.Protobuf.dll" />
+			</Component>
+			<Component Id="cmpA96561BF8C0450288B89C5EF4533706F" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{4627D642-54AC-45B8-A0F4-9D3BD3488818}">
+				<File Id="fil3ECD70B32FC5E32B72ECC9A3B7CEF854" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Humanizer.dll" />
+			</Component>
+			<Component Id="cmpFFB68F6B881C94F662A6F5205463B537" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{756B5F30-F536-4562-B376-DA7658061AD2}">
+				<File Id="fil4F6FF1E387E24BFCC1F616871B1157F3" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\IronSnappy.dll" />
+			</Component>
+			<Component Id="cmpBD65C36AEBF9CAB05C0B77E44E2E9E11" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{0E875539-A8D1-4F42-86C0-078D1BD939B1}">
+				<File Id="fil3AD01D6B1DC872640122B2CF2BEAB5DE" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Jint.dll" />
+			</Component>
+			<Component Id="cmp1AD2B1D0B33412615BF981CB728837B9" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{24F2D3E7-343D-4C6B-A662-E873EDFB6925}">
+				<File Id="fil102FD55FFC85F5491D769E92EEA000E8" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\K4os.Compression.LZ4.dll" />
+			</Component>
+			<Component Id="cmp3134135F3898A0509FF1F64663121767" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{7DA17B63-595B-465A-AF00-EBCD2BC65C1D}">
+				<File Id="filC21C0EBFAC67128092E29AC9CB129A4B" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\K4os.Compression.LZ4.Streams.dll" />
+			</Component>
+			<Component Id="cmp4D0429A969D5C1F644780565CA03F291" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F7D40A4F-2F34-469D-ACAC-71A688B20D1B}">
+				<File Id="filC6069F453AA1F5D8D4F32E3899AED241" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\K4os.Hash.xxHash.dll" />
+			</Component>
+			<Component Id="cmpE9A167FA0AE1B6B5128033C200F616E6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{1B810D05-BCC8-478C-8A27-A7C628EE3272}">
+				<File Id="filC7FB92CF5138B8C32828B54D8CEFE6F9" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Lambda2Js.Signed.dll" />
+			</Component>
+			<Component Id="cmp0A9466BA334E9B68AF1E5533D56D23F4" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{BA21D4C2-BFE0-4EE9-873E-F9D9FBE93A3E}">
+				<File Id="fil007577764850910DAB65481875D76246" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.arm.32.so" />
+			</Component>
+			<Component Id="cmp3AE6881B64B099FFBCA89ECB67524134" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D46FF0C2-D7FC-4F32-B73E-0779456662D7}">
+				<File Id="filA11FFE81EA340080ED6AE9B969A66456" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.arm.64.so" />
+			</Component>
+			<Component Id="cmp00DD1DD1551C232C1CCF331D63FB0BED" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{BE9446A5-A6B4-4675-BCB8-F105E7CFB207}">
+				<File Id="fil5CAD568BFEC2D0F140C3A884F680FFCD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.linux.x64.so" />
+			</Component>
+			<Component Id="cmp485D097A70494945380D5B88271657A3" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{4DE93A44-F18A-48CD-92DA-406346307524}">
+				<File Id="fil3328DEA547207A94A35A4737B76A2F75" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.mac.x64.dylib" />
+			</Component>
+			<Component Id="cmpC71237BFA90A8F4C3FF8C31DA1F27AA1" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{5828CBDA-4E2D-407C-90E2-3450871A92CA}">
+				<File Id="fil3E61A773BCE6C10B00AF4C666B379D9E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.win.x64.dll" />
+			</Component>
+			<Component Id="cmp325B88EFBE90EDC7B37FF4148F474C97" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{87C8AC41-0F25-4448-A2BB-9FE94788E479}">
+				<File Id="fil9A23AA83E50457CB496B7B365D1F9405" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.win.x86.dll" />
+			</Component>
+			<Component Id="cmp63536C2B2CCC988FD95794BCADF09081" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F5D0683A-6CC0-43AC-9AA3-2D35CD92314F}">
+				<File Id="fil56ADE321ADF71D02D9EDEA0B65192BC1" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.win7.x64.dll" />
+			</Component>
+			<Component Id="cmp286E165B111A972E2DD035A6D653CCA7" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{177DF9AD-64F6-4BEB-9E85-1A89F62098B6}">
+				<File Id="fil4D2096955BAC8D1D3CBFC30AA277260E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\librvnpal.win7.x86.dll" />
+			</Component>
+			<Component Id="cmp75980DCB05C71255DC551E8B9127DE80" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{FDEF4A9A-D8CD-4DC1-9296-ACCB80EC410D}">
+				<File Id="fil6B53CCC7911FE0D547E0847D8463AE1F" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libsodium.arm.32.so" />
+			</Component>
+			<Component Id="cmp74134098BA23696EE25AD20B794BEC55" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{69D8C141-3368-4894-91D7-2C81C60E8EB5}">
+				<File Id="filC9C161C581AEC38495BC3EDE7F6B016F" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libsodium.arm.64.so" />
+			</Component>
+			<Component Id="cmp03CAE39C3081C58D52C8141866B74F0A" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{A8C56D20-29C3-491D-85DC-D68FF0A745AD}">
+				<File Id="fil848837AAE0F6B3D1CB23A16C35D9ACE5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libsodium.linux.x64.so" />
+			</Component>
+			<Component Id="cmp22231556D7E2D3F28004DD4432FF1F18" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{C86354F0-258F-4621-A0B7-B7CFCBF4CD3F}">
+				<File Id="fil6821107B236F05FC6A7EB7F8644E732B" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libsodium.mac.x64.dylib" />
+			</Component>
+			<Component Id="cmp8A8720093BC129F544E761E4A2D9FDD6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{1C2AD506-4A5A-4714-A13C-30BB20E26BE9}">
+				<File Id="filDBFF9F775CC6422A937595994583C718" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libsodium.win.x64.dll" />
+			</Component>
+			<Component Id="cmp7FF553ECD96AAF9A5AA41F83AA9800D8" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{356D4583-D46D-481A-8D83-114CE44A16DE}">
+				<File Id="fil20AD37B1F475A0D7E68346F0B9A1F1C4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libsodium.win.x86.dll" />
+			</Component>
+			<Component Id="cmp1A9B71617D59D8F0A7CB4F47C4C4B28D" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{7431B8E3-DD62-4598-ABB2-A074ABA9F69A}">
+				<File Id="fil03D02FB149B83E53B26A96C43FED0513" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libzstd.arm.32.so" />
+			</Component>
+			<Component Id="cmp6FD5CD815622CBFB4DB84B9693285F9C" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{C0EB8498-5D3E-4FFA-AC28-0BF91D69CC59}">
+				<File Id="filE71657A5CCD3A69820EAAF7B0B47C7E9" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libzstd.arm.64.so" />
+			</Component>
+			<Component Id="cmp04F9ABDC7D750D84E54F6A21BED0AF09" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{FC7E7155-99A5-44B5-A382-BE5DAABF667A}">
+				<File Id="filDF2D2420C003DD5C77CB2F44B7E15476" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libzstd.linux.x64.so" />
+			</Component>
+			<Component Id="cmp5674D553AF4C00162B16EF4CBEF4E9D6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{6EE4E45A-CF5D-44B7-8BD7-1A809B89D297}">
+				<File Id="fil2FD137AD38FABE870BE00A508F55FAA5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libzstd.mac.x64.dylib" />
+			</Component>
+			<Component Id="cmp3F4C88266B0F02F5193C925E62D6B76C" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{8C61F691-D49A-417C-8E3D-3420548363A3}">
+				<File Id="fil6E221A6AEE5B140F4514A8F9019A631B" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libzstd.win.x64.dll" />
+			</Component>
+			<Component Id="cmp13AFEB56E2FD826C1B60F3CE1A5549BC" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{07662971-EAF5-4FDD-99C5-7B355DA7DE35}">
+				<File Id="filC26C1977F4E043B8754B02F95C279E96" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\libzstd.win.x86.dll" />
+			</Component>
+			<Component Id="cmpB73E47F5116D855052D76D7409CF2573" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{CE23D0CC-84EB-44E1-A35A-3E64073C63CD}">
+				<File Id="filC3F2BE6BB4A948AF5F0065D1BC12A552" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Lucene.Net.Contrib.Spatial.NTS.dll" />
+			</Component>
+			<Component Id="cmp88950AEE94A6E50E797467F8715A9E2F" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{AB52FF9F-9B16-41DC-93B7-28DAB35B989F}">
+				<File Id="fil3DF19371682C4DB9E9F2D71646062CD5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Lucene.Net.dll" />
+			</Component>
+			<Component Id="cmpFA02AE6E0ED2F7BA69D8713BF2FCDADA" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{6265CDAE-B6C8-4152-AC92-92796B1FEF44}">
+				<File Id="filE90A136DDB2B37B116CA8D2F95C77160" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\McMaster.Extensions.CommandLineUtils.dll" />
+			</Component>
+			<Component Id="cmpFA094742CC224CDF359EC61F68BC198C" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{738F7812-3E60-4528-8EC1-B16BC71A3F63}">
+				<File Id="fil6CBF9F78EE3DBB4A098607C91C0975E9" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.AspNetCore.JsonPatch.dll" />
+			</Component>
+			<Component Id="cmp5F89A8FC74DA3019CF33B3170444E9BE" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{9E8D2363-7000-4D19-9A5F-5132DC56F1A1}">
+				<File Id="fil634BABC6F0D55ACBBC56997BF2213652" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.Bcl.AsyncInterfaces.dll" />
+			</Component>
+			<Component Id="cmpF324FCFF338A35B0D810FCBD8388F022" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{6E0A8670-3E11-4ADA-A8CA-0CD84538F392}">
+				<File Id="filF4281A62B9E413583A1663A4E735F7CE" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.CodeAnalysis.CSharp.dll" />
+			</Component>
+			<Component Id="cmp38A5F0013F68B23A454772D808506512" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{2ACBCFC0-ABB3-4EF4-9FAA-6306F40B0FFE}">
+				<File Id="fil4D1D0282FEE8E1CBEAFA97A3563E07D4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" />
+			</Component>
+			<Component Id="cmp13B991023A33A2CAC4814624629DCB12" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{696C1D24-2D97-4C7F-96A9-33342C2B2919}">
+				<File Id="filF591FB0FF4ECEB60DAC00CECD1896C4E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.CodeAnalysis.dll" />
+			</Component>
+			<Component Id="cmp61F193CC2534B7FE9ECA5E918EB0C6A6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{5F87B07B-72AE-4F1F-B237-578904637924}">
+				<File Id="fil96893FE2F27DE8ADB9132177E4F455FB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.CodeAnalysis.Workspaces.dll" />
+			</Component>
+			<Component Id="cmpE9E891CB407E226CF1DA993F1F4A901B" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{A445D7DC-2DDE-4D51-B7A4-5DC4CE1AB63F}">
+				<File Id="filFF37793476B9DFEE865FEEC38591D543" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.Web.XmlTransform.dll" />
+			</Component>
+			<Component Id="cmp019609BB8937FAF6EAFCE2FD37EBC26F" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{9B749FDC-647B-4139-AADE-DBE97473A2CE}">
+				<File Id="filFE5856A91D893D4BE0F37AC989DE7881" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Microsoft.Win32.SystemEvents.dll" />
+			</Component>
+			<Component Id="cmp936CBB079B994D4DCA184276714FF61F" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{AAD0A9D6-6F77-4490-8000-7F9112A0AA36}">
+				<File Id="filB2DDFE362B0FCBDEA3363FBDB7742C83" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\MySql.Data.dll" />
+			</Component>
+			<Component Id="cmp525B1842569B3D58E25DF12D7F4827BD" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{E90197A1-934B-4371-8E6C-E93901468000}">
+				<File Id="fil17AFBEAFF25D39004FE12A30D6AC7574" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NCrontab.Advanced.dll" />
+			</Component>
+			<Component Id="cmpF4D7AECE5CF2684C4A4A431F3E03769B" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{9AEA4A06-E3D1-4DDB-AC0C-CB560EEB59FD}">
+				<File Id="fil00F69B914728E876F79D5149AAB5C8BB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Nest.dll" />
+			</Component>
+			<Component Id="cmp68C4617A3AD973FC753F36671983538C" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{39EDF34D-5245-4EA9-8DEC-5916601AA296}">
+				<File Id="fil129F6C8FCEA0B0DAB21478B127ABE7CC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NetTopologySuite.CoordinateSystems.dll" />
+			</Component>
+			<Component Id="cmp72D11D717DBAD6FA63CD22F7FA059E82" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{3E48469F-A9FA-4BA7-8F01-AA97C79AE5C5}">
+				<File Id="filDE7BB20ADA39D2B6BDCD9F02582F284D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NetTopologySuite.dll" />
+			</Component>
+			<Component Id="cmp74EC69947D7EE0D9839581ECCD531402" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D8B577E5-BD84-4853-8497-46424734A835}">
+				<File Id="filAE57F9F93D62EB05B0F5DD1CC7541274" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Newtonsoft.Json.dll" />
+			</Component>
+			<Component Id="cmp2055A8F8818D77F88626DC660D790EFC" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{05F05B33-ED73-46B9-839F-5532BBFE7D91}">
+				<File Id="fil4C4AD4C413102E6938784F66A26B31E8" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Nito.AsyncEx.Coordination.dll" />
+			</Component>
+			<Component Id="cmpAFE714FC791773CFB3BBFE59B88370E2" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{0183C58F-09C3-45F4-86A7-94B71FCE4CF4}">
+				<File Id="fil5C6169441345FC7D38C019587B4F0758" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Nito.AsyncEx.Tasks.dll" />
+			</Component>
+			<Component Id="cmp5C40448A677102CC658B0336ABD89EB9" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{7618E254-7FC0-4B23-8433-92EFC302E06E}">
+				<File Id="fil3AB69AA930BE9A4FDEDB03072A3598CD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Nito.Collections.Deque.dll" />
+			</Component>
+			<Component Id="cmpC11567BE787CD21B87CA189E110664B4" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{87D6E9E0-FAAD-46F5-A9A4-0628A0E91FFD}">
+				<File Id="fil3B7B7830CEAF669CD31E9FD2CA6449B8" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Nito.Disposables.dll" />
+			</Component>
+			<Component Id="cmp6F5C05C0952A18DA8F975E5BC05A7EC2" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{A6506953-4554-48A0-9879-71D1C4089496}">
+				<File Id="fil3065D61FE4E8F077F3CE0006BDA2D0E1" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Npgsql.dll" />
+			</Component>
+			<Component Id="cmpD66D5B2AC0500926AD00D14C1F285D17" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{173868F5-F04B-46FD-B76C-8B918E1B25DE}">
+				<File Id="fil58BE35F4AD0F1CCBF159072DA2A8EF04" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Commands.dll" />
+			</Component>
+			<Component Id="cmp8428D8E15BE5A84657485B3FDE6A267B" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{565F83D9-1714-41CD-8D85-F92C2427D5B4}">
+				<File Id="filA699D5221EF641857632C172778F8E36" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Common.dll" />
+			</Component>
+			<Component Id="cmpC35387B9F458E334EE9710B66464176B" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{2DEF5B05-2210-4E1C-8B03-1AA7C3A9082E}">
+				<File Id="fil3E130C4728461CA47DFFD57CE54F8B47" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Configuration.dll" />
+			</Component>
+			<Component Id="cmp1EBBAD78F80D3B43B5DC4F3FD13DC38F" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{27E1CEB1-F8FB-43BB-82C1-D7F52D933C03}">
+				<File Id="fil7E110826E87EFF04D0944F2DB65DFF6D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Credentials.dll" />
+			</Component>
+			<Component Id="cmp04301C4ACB85784B2221272BCB6CEE59" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{E0E41B05-6866-435F-AF11-482129D5C929}">
+				<File Id="fil13E7EE2BCADCC0CF5E9C6EAF5986BA86" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.DependencyResolver.Core.dll" />
+			</Component>
+			<Component Id="cmpB8C2E9A964DD4FBD189656E506CA9E58" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{10B4E854-3374-4594-8A74-81310E79E20A}">
+				<File Id="filA63519006DA00701DC2D808DD8662456" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Frameworks.dll" />
+			</Component>
+			<Component Id="cmp80015F907560F4ED4736A49E89C33409" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{C3FC8C21-B986-4CBF-A100-52BEA92320C9}">
+				<File Id="fil361607717328ABE9B513CF410BD16756" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.LibraryModel.dll" />
+			</Component>
+			<Component Id="cmpF7EA59A7C891935A28F222BD8F3D86DE" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{63BDD52C-ED7A-4505-BA67-3A4E09E399BE}">
+				<File Id="fil4D1C9A2A77E98C82E698A561430CFB34" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.PackageManagement.dll" />
+			</Component>
+			<Component Id="cmp531C86E567A3A1600CDFCD856A5DF455" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{7BA2336D-1DDB-4BA2-BA23-51F1C40FF6CC}">
+				<File Id="filA5072D611283A2B5CAD636D523CF5A37" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Packaging.dll" />
+			</Component>
+			<Component Id="cmpD3136607C8177EE0C4C478C5517F10D1" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{9B73018A-B13B-45D1-B0CD-71828768857B}">
+				<File Id="filF7F0D96CD4C70622EB5BA6DAE5A771AA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.ProjectModel.dll" />
+			</Component>
+			<Component Id="cmpA143FD7D8CD775C96B5B8CB1A6DD6109" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{C19413D4-18E7-4F3E-8D98-01304623BFA4}">
+				<File Id="fil3B1AFF0772CA93D8FCF5B3322F32636E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Protocol.dll" />
+			</Component>
+			<Component Id="cmp9A0AE353160567A7867B2D12F1DC6FD2" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{4B60FE6C-98C7-48F1-9D57-D7D0AE1BC275}">
+				<File Id="filF359E1678E5BA0B92EB83017A2C657AD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Resolver.dll" />
+			</Component>
+			<Component Id="cmp1E24246D1553DAA3EDA472E75E5F57D4" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{EB6C0F45-D022-45F2-80C7-21F3F621E2FF}">
+				<File Id="fil42B37DC2101717EED6A659DE2AA101F8" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\NuGet.Versioning.dll" />
+			</Component>
+			<Component Id="cmp2DCB149E2B6F4F238CA00F2A339EDE58" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F1E831A7-9A1A-4319-9C49-2FE60AF5B982}">
+				<File Id="fil40CA3786B601E53D85B78CC0B6904C90" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Oracle.ManagedDataAccess.dll" />
+			</Component>
+			<Component Id="cmp789AF0EDC770B80D4851AC6C89A51E04" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{A211E63E-6D68-4D9C-858A-29512687049E}">
+				<File Id="fil11A987FDF955DF696905620FEB7B53B9" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Parquet.dll" />
+			</Component>
+			<Component Id="cmp103A76F5E1ECF7902A616F65591E6C70" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{AB2085CA-35AE-42C4-A4C1-C241EC02B857}">
+				<File Id="fil7D4D3D6781D98CF13D6738E3074B9399" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Raven.Client.dll" />
+			</Component>
+			<Component Id="cmpDAB7D1FB4A6689DBEF4A33AE77EC00A2" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{89D00188-F91C-4CFF-B561-5045FF0ED60A}">
+				<File Id="filDD78A64F1E1A6E096A6D6CD21611C7D9" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Raven.Server.deps.json" />
+			</Component>
+			<Component Id="cmp3E5D2139145CF3B0DBC2287C1236DE1D" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{224EACF8-0DBB-4A2E-A22D-ACCE500B63B2}">
+				<File Id="filDC77F25BCF7D6F117AD447ABE7CC7FE5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Raven.Server.dll" />
+			</Component>
+			<Component Id="cmp43DC86FBC4299A6AE85D989B604AFA45" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{7695F658-A3D4-436A-8211-79A6BD576858}">
+				<File Id="fil7EBC12090F4795300109A25C7312A92B" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Raven.Server.runtimeconfig.json" />
+			</Component>
+			<Component Id="cmp8F63F5FBF8DBE2B04CCCC4FCF18F1E00" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D331B72B-6CC7-4FBD-9A4A-AC7AEB8E88E7}">
+				<File Id="fil38223E39E478051BE906064631FE0F56" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Raven.Studio.zip" />
+			</Component>
+			<Component Id="cmp35C072AC296A440B4351467E997AE31F" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{0CF86B5B-8BA4-4A50-BA8F-1BF34FBB06F7}">
+				<File Id="fil6A4EF1247D4237882C8C593C6CC177DC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\SharpSnmpLib.dll" />
+			</Component>
+			<Component Id="cmp43546A84A3DFB1FCF7F224AC659250FA" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{4E702E0C-E580-4838-8150-225EB3FA0574}">
+				<File Id="fil68494440FADE367335C1EDCA09A5D5EB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\SharpSnmpLib.Engine.dll" />
+			</Component>
+			<Component Id="cmp2A53154D9402E54138CE778AB83A0CC2" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{5FFACFFF-384F-48A0-977F-E9F5083942E3}">
+				<File Id="fil8A820D6D6964AD8BA4D69636DEE1002F" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Sparrow.dll" />
+			</Component>
+			<Component Id="cmpF87E30332D560118843847F48AEBB165" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{B8460A76-54AD-47CA-8E6C-AC7FCF8E0F73}">
+				<File Id="filE76FB8DDC2360F09B981B2E60ED76084" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Sparrow.Server.dll" />
+			</Component>
+			<Component Id="cmp15B2135CC9BA9B67333C1F34AF0EAD91" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{C063050A-EEE5-48B6-BD1A-43AD7575CA2B}">
+				<File Id="fil16D00EAABFC5869A00332B2B995787EA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Spatial4n.Core.dll" />
+			</Component>
+			<Component Id="cmpC39F7D269BFD45EDCF3249E7F251AE3C" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{DF6E0903-382E-4E02-B6F8-D4DCE18FCE12}">
+				<File Id="fil8C36A7E8620BDE4250C5A0001AFC25C7" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Spatial4n.Core.NTS.dll" />
+			</Component>
+			<Component Id="cmpF9D85A318220DF5D355E0AB58DA35C43" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{041829E9-11B3-4FF4-8AE2-E01CCC978276}">
+				<File Id="fil2CBF9180D3DF9194538E946121013445" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.ComponentModel.Composition.dll" />
+			</Component>
+			<Component Id="cmp97DEABD8691B0349F99C4C59817EAA7A" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{7144EAB7-1F4A-4CF4-88BF-660153FF8AA1}">
+				<File Id="filA301B176DD5C69B7C5E8F62918E1C93A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Composition.AttributedModel.dll" />
+			</Component>
+			<Component Id="cmp5C271D6E72E28E21D90B498C2DFCC354" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{763C1B5D-2454-4C19-A4C8-08363187A828}">
+				<File Id="filB51D5B61F9D4EE3D95EA3BD37CA7CDE4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Composition.Convention.dll" />
+			</Component>
+			<Component Id="cmpAEAA5352EF531CB6A48031CAA6C527D6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F79A5253-A5FB-409D-9049-827D62904826}">
+				<File Id="fil4BA675FE22BFFB00D4541136606CF8E1" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Composition.Hosting.dll" />
+			</Component>
+			<Component Id="cmp3CCD34B6F47DC9A786CD160100E62B41" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{37993007-972B-41B7-ABF0-ACD48D6B722B}">
+				<File Id="filD6FFB43DE235C0B0FF05AB475B1176A4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Composition.Runtime.dll" />
+			</Component>
+			<Component Id="cmp5A79CF53EF40772330F7A6F40CC24341" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{04F27E5E-DDB6-42EF-BD42-183DDB7AA878}">
+				<File Id="fil14FF623CAE4DB98FF8DE3420FAAF80EB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Composition.TypedParts.dll" />
+			</Component>
+			<Component Id="cmp753FE33999C9B723A20695B5237E5D18" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{B8CE4F91-72A1-464E-A27D-B67DBD58BDB2}">
+				<File Id="fil20FC440DFF1748F33A569E5CF0768EAA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Configuration.ConfigurationManager.dll" />
+			</Component>
+			<Component Id="cmp53797A8B07182E66446FCF1B89E169E6" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F5B9D032-067A-44F0-BF89-EAFB44C1FA34}">
+				<File Id="fil606A50CD97C111E160B995377ACEB6AF" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Data.SqlClient.dll" />
+			</Component>
+			<Component Id="cmp74A4211E0F6BEED910DCFE4BF03DC3EA" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F0310E32-7053-41F4-8F45-CC505C52B5D2}">
+				<File Id="fil209AAF6A49DA48503444F62DF5ED03EE" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Diagnostics.PerformanceCounter.dll" />
+			</Component>
+			<Component Id="cmpDD74B9550194951977BFB777445B3450" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{BC69B5D2-FC78-4130-972E-C85AC529CCE5}">
+				<File Id="fil03C143DFC718C636A13BC2B76C1A67DD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.DirectoryServices.dll" />
+			</Component>
+			<Component Id="cmp63EB8F8719EAA0B9734835725204C009" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D28BB191-E1D0-487B-8567-4AE080CC4372}">
+				<File Id="filD9A5DB07FA96678F64A1984E539E7F18" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.DirectoryServices.Protocols.dll" />
+			</Component>
+			<Component Id="cmpE14352B2F46FCB0606B2FF9F5A25A945" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{0A0C0EC1-EA57-4077-8ECB-37295ED841DC}">
+				<File Id="filBFAD39F13A666DD940172A112F6840E8" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Drawing.Common.dll" />
+			</Component>
+			<Component Id="cmpA4CBB505B548EC1752D9D72F6FB6EA8E" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{0033A920-4F45-4E8A-A4F9-A56137C28A2B}">
+				<File Id="filB5739B24A8D3ADB3959A24B8069F7EB4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Linq.Async.dll" />
+			</Component>
+			<Component Id="cmp7FD35091D1AE4148253B3BBE1B5E5F80" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{36D76D9E-6327-4C42-A51E-2C40BAC23A30}">
+				<File Id="filA59C30C31296FF3DEE023545FCFA38C0" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Memory.Data.dll" />
+			</Component>
+			<Component Id="cmp22B149DE4D85EE1F46042DBE13C462CC" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{90407A4C-EAE6-406C-962B-243A24722B33}">
+				<File Id="fil518A880B87AD5463415C8D4EC2C07F94" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Security.Cryptography.ProtectedData.dll" />
+			</Component>
+			<Component Id="cmp27CCC9A3DD452512E51587D9E59B59C8" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{B6C206DE-3F4F-49E8-840E-92A382069470}">
+				<File Id="fil59E13444C43807E1399F3978864FE637" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Security.Permissions.dll" />
+			</Component>
+			<Component Id="cmpB7B65D6BCF1FB3693E349B7831396C4D" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{878B2A5A-4A94-4D91-8D15-E830D4891C55}">
+				<File Id="fil63A01D310D76337E56523B1CC7CA5EDB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\System.Windows.Extensions.dll" />
+			</Component>
+			<Component Id="cmp18E7F704E98C045E31794D5C8AD80C31" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{F5ABEF6D-8030-4545-B8DC-645F7E4FDED2}">
+				<File Id="filC3CC143067F5B3EFAA6396C21893E61E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Ubiety.Dns.Core.dll" />
+			</Component>
+			<Component Id="cmpA13B5397E3BF0F70E65CC2B4F565EE44" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D0D1AAB5-9F04-4969-9232-CF53A742ECA1}">
+				<File Id="fil7350E243609EEF9C7F5A8E977D5B2A28" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\Voron.dll" />
+			</Component>
+			<Component Id="cmp904846BDBB38C18EE4B02A399928C9C3" Directory="dir5F46F574D49F552B476846BBE07EFBE3" Guid="{D3E71F3C-A136-497C-9D7B-3D039899B006}">
+				<File Id="fil2B688A7860DFEE7FA7914F018462B4BB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ZstdNet.dll" />
+			</Component>
+			<Component Id="cmpE22B5248242385CAAFE7798DD403C43F" Directory="dir2AB2960D3D81450D4321A192971A412D" Guid="{E11B25A0-97C0-4875-BD3D-7D0E4287EE00}">
+				<File Id="filC0C0B438B8F77BC263CD2462A5F3191A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\cs\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp159DC1CDEAF83C8CC78FB6AEC7904A14" Directory="dir2AB2960D3D81450D4321A192971A412D" Guid="{0EEACE8D-3C00-4012-A9C8-47C0ECD40375}">
+				<File Id="filB944F8C01BDE88F201ABE37496CB6FEC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp085FA9E7015D0378D1F97522D79A810D" Directory="dir2AB2960D3D81450D4321A192971A412D" Guid="{B82B04DF-8032-43B5-84E4-BD478642B0FE}">
+				<File Id="filE06DE14178905F2074AA5936132717BC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\cs\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmpE079E7B8783E494D672A9932A7A2C0AB" Directory="dir2AB2960D3D81450D4321A192971A412D" Guid="{3FDC47F4-FA91-4864-A8F1-22AD7650A107}">
+				<File Id="filB989CB7D58B9A5B872EA9849BF3DE523" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpB526FF0E80099AFBB4B852177A7B6718" Directory="dir4EA06EF680592AD0D33B1E0BDBC08DDF" Guid="{773BF641-CAEF-4F96-9513-0CEF0B85E342}">
+				<File Id="filEF7047E644AC381462795196922C3EC3" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\de\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmpD16C712872D020FEB2A6122FA0967015" Directory="dir4EA06EF680592AD0D33B1E0BDBC08DDF" Guid="{5A663B10-839A-4951-97FC-5680F84F5705}">
+				<File Id="fil73D2F3B1598A61438B48A98BF8B3CF8A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp4F1A1668F9619A461F8D4AC7A5F6022A" Directory="dir4EA06EF680592AD0D33B1E0BDBC08DDF" Guid="{D84DB851-6F9D-4987-900E-64CBE1B1C721}">
+				<File Id="filBCB23CE21B32A5C99CEFF5A407E15CDF" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\de\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp50D69E30E3A6FB580131FC5CBBBDECAB" Directory="dir4EA06EF680592AD0D33B1E0BDBC08DDF" Guid="{50D69573-2978-4464-BD10-AFCBCB04274F}">
+				<File Id="fil03E4AC42FD80359561D999FA23B66AF7" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\de\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp954A76B7EFA3DBADF2249B9184595A0E" Directory="dir2A164A0A47C5D2FF09A0DA6E1C0EF688" Guid="{DA08B5CC-ACB7-4347-B156-BAD95AC3250B}">
+				<File Id="filF5ED53E7C9026D830CF0055D03A36498" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\es\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp2ED70E0ABF23285BA0CA85C21A540A33" Directory="dir2A164A0A47C5D2FF09A0DA6E1C0EF688" Guid="{7EA671F1-60A6-4B00-8E1F-0C8D5F185661}">
+				<File Id="fil9209945AB9C89D2095DC6180DE27FD3E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpC381C68B9A4FDD2A582F9855317E0C45" Directory="dir2A164A0A47C5D2FF09A0DA6E1C0EF688" Guid="{A8E16B0F-EC31-401B-B74E-DD1DB6A6F59F}">
+				<File Id="fil0930E65FA7976CDAC6AB11A6D49D0A24" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\es\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp63304EF75792BD70991B9C415E859B3C" Directory="dir2A164A0A47C5D2FF09A0DA6E1C0EF688" Guid="{9260C2A3-4D99-444E-B100-86EFE5F1D7E1}">
+				<File Id="fil48D6F47151D9F2E0074877FE3730DFC9" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\es\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpCD5D132EBA56B0067590527C6C81FC3C" Directory="dirE09E991C4BBA60FA324487CC5D2C4726" Guid="{FD521885-DA9D-4401-AEB3-93AD2250D670}">
+				<File Id="fil5A0F0CAE8504196BF4740C373A3A5AFB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\fr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmpE55DBBCF90FCA532D2FD16BFF29A7393" Directory="dirE09E991C4BBA60FA324487CC5D2C4726" Guid="{0984E479-CD88-4E49-A6DD-AB8D9F0CE7D4}">
+				<File Id="fil7F040A3B2B40945F943AC9C52E5272DC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp56502593F976A5B48CD5231814761459" Directory="dirE09E991C4BBA60FA324487CC5D2C4726" Guid="{CDECF723-851A-403F-8E3C-493DB8030FC3}">
+				<File Id="fil47BE89165F92E4153421D28BC6337111" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\fr\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmpCAD23765EA9F224610D6282A14933F05" Directory="dirE09E991C4BBA60FA324487CC5D2C4726" Guid="{B3E0147A-C6AB-4A52-AD8D-12467068B33A}">
+				<File Id="filA527158E6C46FFF3E0B57477396A430C" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpE6E3AB7D106DF02A38ECF4D486BEA272" Directory="dir045EC65FB39428D0A7CEA38202B33D9D" Guid="{7489CA40-B7A1-4DE9-8766-AA5A92E33013}">
+				<File Id="fil0DBFCFE14D745E9B46913FCCADA3E0D7" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\it\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp0094959AB670A2E6D43A0E880D816645" Directory="dir045EC65FB39428D0A7CEA38202B33D9D" Guid="{6A75B256-9D03-4474-9FFE-03467D6C878A}">
+				<File Id="fil3D8DB7928DFFF3A21AE4AB51BBEFA329" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp32BA1607003217373CCF1DC87C2B5889" Directory="dir045EC65FB39428D0A7CEA38202B33D9D" Guid="{B95CA80B-35D1-4685-A9A6-26032747B0B5}">
+				<File Id="filC9C939CA44D026B5CE6CB596B38C5B51" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\it\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp7360D62873BEDB542257213D5B2E903F" Directory="dir045EC65FB39428D0A7CEA38202B33D9D" Guid="{07754800-5A06-4A55-8DCF-BE4331CC32B5}">
+				<File Id="filD6CF5929B1D2F7242CB30279C4FE5F21" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\it\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpA6E89DE34FE8D3C939E794EF249F5D36" Directory="dirE250C7BCEFF8531A23E092BBED2D6879" Guid="{979693DE-B1C2-4DED-BD0F-D0E57068E928}">
+				<File Id="fil14D43D86B54B11C4ABC11C994901A5E2" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ja\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp8B72CCED972359D7C59417EAE8E6C288" Directory="dirE250C7BCEFF8531A23E092BBED2D6879" Guid="{0884011C-DC38-4AA5-BA93-9255A1D40A14}">
+				<File Id="fil20AC43C7A0EAF32782BF4B5D7C689BBB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp2ACF99476BA43A96B7DFF3260A44EC4A" Directory="dirE250C7BCEFF8531A23E092BBED2D6879" Guid="{9C1E5EF4-B880-49B8-AFE2-E5D41CDABF87}">
+				<File Id="fil28BC203DE54BF0064F3176DAFB725D0D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ja\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp957A196AA83715EAB141229081A330B0" Directory="dirE250C7BCEFF8531A23E092BBED2D6879" Guid="{BDB01112-FC24-4F58-A29C-8E24F81439B6}">
+				<File Id="filDFCBC222E016FA4135A73A617F050E74" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp2F36633AA0237E6A6E75FA78EEB86F92" Directory="dir772CE2EC271EE71F84CE1BD8F39AAD61" Guid="{35ECF9C6-0914-4B73-8219-A0AB8DF7550D}">
+				<File Id="fil8DFFDF3F53D5A08751C553234FECF6F1" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ko\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp848ED489E555A72FF30CA5A7CE6D8AC5" Directory="dir772CE2EC271EE71F84CE1BD8F39AAD61" Guid="{28686635-9CC4-4267-8182-DFE0F6D35E04}">
+				<File Id="fil2A71E1D4DBE338E218CC18B6E8E3B58B" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpB084113E32B36E123B1FCF6726689863" Directory="dir772CE2EC271EE71F84CE1BD8F39AAD61" Guid="{B92C18F5-71AB-4D54-B752-2A49C3C4E180}">
+				<File Id="fil42631A417C13F23C67AEDAE11CDE80D4" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ko\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp71650C87DDA02AF14CBDFAC192A4B426" Directory="dir772CE2EC271EE71F84CE1BD8F39AAD61" Guid="{DC70868C-9DE3-4F6D-B33E-861DAF9A1052}">
+				<File Id="fil9BF31D32A59A42B60725C7F2C0937886" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp1648F52C946190E7E06171302AF705D6" Directory="dir26279A5EE74EE3E241CDB84EC6EE8C00" Guid="{E83FA50D-136A-403A-AE66-2CA0A3DD66B3}">
+				<File Id="fil3504C058E9CD2E611920E482A6A3EED1" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pl\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp0F9F2AF1ED277DBB7573AC69C7DEDCBB" Directory="dir26279A5EE74EE3E241CDB84EC6EE8C00" Guid="{718E00B6-234B-4719-A530-9B2A951F7698}">
+				<File Id="filA5F9004DE2A8DDAB31BFA40E58A3EF38" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp14DFFE3448D5A2F07279F5D513F7C8EF" Directory="dir26279A5EE74EE3E241CDB84EC6EE8C00" Guid="{390FC751-0FF9-4C12-BA4B-7BE90F5D95DF}">
+				<File Id="filCC38659422908BFCBDC86D65AE255F5F" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pl\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmpA9B93DB58C783EE9A969CE15977C397F" Directory="dir26279A5EE74EE3E241CDB84EC6EE8C00" Guid="{93DA1DBA-8867-41F6-8023-3DF60875824C}">
+				<File Id="fil4CF680CE59C3091C149071353DE1459A" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmpC36CC3DDBC97D0C5F0438A6D0EE26DCF" Directory="dir7959577709298BAA9C90ACA0F5054801" Guid="{AF4E3F1F-9766-4744-8590-FABB915206E6}">
+				<File Id="fil9D21F1DEB58334350D0ACB945DDCFCF2" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp1823F3DAB1DE035B35E5F7004B98F234" Directory="dir7959577709298BAA9C90ACA0F5054801" Guid="{6E711A64-E599-4AE6-A397-2DDAC15C173B}">
+				<File Id="filE909C47259CF3096794DC2079909C945" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp490AFB330545FCABD3404D6B80627C9A" Directory="dir7959577709298BAA9C90ACA0F5054801" Guid="{2C049FFF-28D0-4099-925B-455288FD31E6}">
+				<File Id="filE95A5581F74D6891A406105CFAEFF043" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pt-BR\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp216ED2DB53DFABB48BB6B096EC2202F2" Directory="dir7959577709298BAA9C90ACA0F5054801" Guid="{8AD24255-0EDC-4D87-B90E-3ED083B4E5AB}">
+				<File Id="fil69F5D9DE643EDA566FCDDACD7A4E8332" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp2B2CC63CCA7B0578301AB56ECEAE4E9B" Directory="dirC5E286ED50B84604F24C52572B3BAAAA" Guid="{C12D6272-E813-473E-A8B6-2342C3369963}">
+				<File Id="fil16640A8EB17C00000DDCF86D8BAE9217" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ru\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmpDB47919E66CD4EE4E0C4931D4BF5BCD7" Directory="dirC5E286ED50B84604F24C52572B3BAAAA" Guid="{88FBD61B-D6D1-47C5-BA5F-81CC6D8E2ABA}">
+				<File Id="fil16BF87A26F88FB59E9C9F8D179D4D1A5" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp019CA68956A6198D265CEF4F32C66048" Directory="dirC5E286ED50B84604F24C52572B3BAAAA" Guid="{B51C28ED-5402-4EB1-A974-9E81AEF036F9}">
+				<File Id="filDABAB43E0F0216969462B8864881D2BF" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ru\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp671EA726DE4F54FA85E978A3779D3FE5" Directory="dirC5E286ED50B84604F24C52572B3BAAAA" Guid="{DACB0642-5705-4997-ADD5-6CB1C44D8F9A}">
+				<File Id="fil72C1379F5EB4D2467F08F8B389204E92" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp15548FEFFCD3E649235B367E4425D05C" Directory="dir5018B0925BFA27DC14B069D74F508259" Guid="{39C9B87D-CF4E-4F10-9B1B-A80D9D4DC84F}">
+				<File Id="fil06E8380BED1B24193378C2EDE80C7F39" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\linux\lib\netcoreapp2.0\System.DirectoryServices.Protocols.dll" />
+			</Component>
+			<Component Id="cmp594DA0C00274D967DB509DA6A3DAD8AC" Directory="dir8DF8F04388380F148D599236B4381CA7" Guid="{5DCA3F37-4C71-442A-B41A-B4A4161FC7B7}">
+				<File Id="filA768DE4303F4E5A3736EABD7C19D2344" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\osx\lib\netcoreapp2.0\System.DirectoryServices.Protocols.dll" />
+			</Component>
+			<Component Id="cmp9F4A0E73724518D43AFD3D01545D2B9A" Directory="dir30B2228405A68D65EA846A51BA75BE0E" Guid="{D210CDCA-9251-492F-B7D7-24809E36A603}">
+				<File Id="filAF5E6BE824A351A4E3719F173573EB3E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\unix\lib\net6.0\System.Drawing.Common.dll" />
+			</Component>
+			<Component Id="cmp8EA23693D4ED926C4D51B85EC6D72713" Directory="dirFEDFDB6D4646EE3DF7F24EF243F2D224" Guid="{7C744E1B-B429-43F6-BA17-B1079F8BD69D}">
+				<File Id="filCF85814354C062423F7F5CCFB812AB2C" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll" />
+			</Component>
+			<Component Id="cmp6CC3F56F01ED066F1C85AC08CB5AFB40" Directory="dir7E4680B3A36A59987C56FB695DA363E4" Guid="{A37C20B0-CE34-4E65-BBB0-91BF4247B422}">
+				<File Id="fil3E40C4BEE5516B1D6579E705B6EE211E" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll" />
+			</Component>
+			<Component Id="cmp7795BC213E32A9A7797657DE55F98FD7" Directory="dir7E4680B3A36A59987C56FB695DA363E4" Guid="{075E5446-DAF5-4928-88CE-2A314359146D}">
+				<File Id="fil9E839C205115E20D74C15D70F7F6936D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll" />
+			</Component>
+			<Component Id="cmp4AEC6FABDECCA53689EFEDDFD28EE873" Directory="dir7E4680B3A36A59987C56FB695DA363E4" Guid="{B3B6737A-40E1-4E3A-950A-7E9BBE437CD1}">
+				<File Id="fil315DC6275C10EFA36C31628BA9A62ABD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\net6.0\System.Drawing.Common.dll" />
+			</Component>
+			<Component Id="cmpBFB8CCDB2E3D92A94A411550689EE22F" Directory="dir7E4680B3A36A59987C56FB695DA363E4" Guid="{7AD871EB-8200-4B93-8DF8-CD323C3795F8}">
+				<File Id="fil1A56CE351E4B700AED436327DBCF0F30" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll" />
+			</Component>
+			<Component Id="cmpB340D54DF63EBD04F0BC35F21EE8EF17" Directory="dir7E4680B3A36A59987C56FB695DA363E4" Guid="{2DCDD2C3-1C56-460E-86E4-72B02888838A}">
+				<File Id="fil9E8F2A87DDAAB77C61019919E5766DFD" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\net6.0\System.Windows.Extensions.dll" />
+			</Component>
+			<Component Id="cmp3E8AF54FCC429A0EE232C6693B633F34" Directory="dirC215288FF00E1C10320C11677241702C" Guid="{909A67A3-17CC-43C1-A463-F7B1B05B643C}">
+				<File Id="fil54D9CBC577467887D692A15A5CCF7DA0" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\netcoreapp2.0\System.DirectoryServices.dll" />
+			</Component>
+			<Component Id="cmpAEA86818E0FF03E4D79CE365D1B601FC" Directory="dirC215288FF00E1C10320C11677241702C" Guid="{D9CFC7D4-F0F4-458A-8F20-25E9C6E43445}">
+				<File Id="fil3AC92D44C6E9B12D022821D774F56048" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\netcoreapp2.0\System.DirectoryServices.Protocols.dll" />
+			</Component>
+			<Component Id="cmp40B46F059166894B9E6A23D6D29EEE69" Directory="dir1627B920949DEEFD358E224136824CCB" Guid="{321525DA-13B0-4583-AC4A-4608708F9398}">
+				<File Id="fil7E91097EFB44675099B9540EC384F545" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll" />
+			</Component>
+			<Component Id="cmpDF476A25A55D30D8585EA090B6A11690" Directory="dir2383985A0940A1322D74A527995B1B2C" Guid="{89420E33-B18E-4727-9C57-1A6881D277B4}">
+				<File Id="filB37822F0509B2E3FFE82100C8FC95182" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win-arm64\native\sni.dll" />
+			</Component>
+			<Component Id="cmp8B01802D0345E3A4EE0C07548B4AF75D" Directory="dirEAAA7815575A73CA38F50D2F3F2B32AF" Guid="{3A636E19-6ECC-4201-8E7E-01C9C730D87C}">
+				<File Id="fil4B8609FCCB3B9716FFF311AB7E86ED66" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win-x64\native\sni.dll" />
+			</Component>
+			<Component Id="cmpA7AEF82BA7EA9CA64A97F7E77CBD1307" Directory="dir2E358535D768F29FEBF82CBFB69D494D" Guid="{7CA489F7-18C2-4EC7-A775-375C5DF5A24F}">
+				<File Id="filCE609BBD3BAFB02A58FAC707647AEF34" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\runtimes\win-x86\native\sni.dll" />
+			</Component>
+			<Component Id="cmpD8E6A3A5754E1565571A53E4305A01EE" Directory="dir07936F30C1EC64C2A1DEAE6232744C1A" Guid="{D0BC11F1-6C59-4E2A-9426-BA0C7FE7D300}">
+				<File Id="fil779F954048FB30DA87A3119A89A42939" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\tr\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmpC96650184013CB7999CA8CDA2131D97D" Directory="dir07936F30C1EC64C2A1DEAE6232744C1A" Guid="{61188C49-5340-4F68-BABC-7465D41AE344}">
+				<File Id="fil9E02FAC4782550BF99F35595FEE4AC27" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp56F9C353030C288E5EC499D2A8139A1C" Directory="dir07936F30C1EC64C2A1DEAE6232744C1A" Guid="{696090FB-353E-4454-8023-21B044C76279}">
+				<File Id="fil1CF7310B64940D43F063A9F833EBEB24" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\tr\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp9AA3811068637BA5F57971A2717CB9CE" Directory="dir07936F30C1EC64C2A1DEAE6232744C1A" Guid="{CD3F5D43-2099-4C4E-A680-B20E2452E3F2}">
+				<File Id="fil20AFB09DFED8CBC21D74E1FAD16C9C23" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp05EBDFF19E0669A642B8514292615561" Directory="dirFD690B5F765333731586B1633BE69A65" Guid="{8E29E0A2-12AA-44C2-9689-D23ACFD4DC36}">
+				<File Id="fil4F9F44EB851BABC7897E6BB38C586293" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp5D56D6AA13AE80BB1B7D55F7B9C18980" Directory="dirFD690B5F765333731586B1633BE69A65" Guid="{52F9FE49-C694-4535-8BD4-8FC634AAC985}">
+				<File Id="fil164B0AFD0CB4F0303E1AE60129F3DB53" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp8BBCA7222D5ACF986A0D52974806D326" Directory="dirFD690B5F765333731586B1633BE69A65" Guid="{39C46C07-E9EA-464A-ACC7-F39CFFC1CE2B}">
+				<File Id="fil03E5A454600601266EAF546A2BFA69CC" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hans\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmpE0A1EA956FD2FA1E0FD0409678A3A990" Directory="dirFD690B5F765333731586B1633BE69A65" Guid="{5AD1BBDB-DDEA-4167-93E6-9327A9B5869B}">
+				<File Id="fil7242F650DE0AAE6106B1E2FAC858ED08" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp9248425CAD594C8478B939206912E2AE" Directory="dirAEC9B5E5E078829BD21E2D0D06B096A3" Guid="{D1E6D9DF-BA32-4003-8037-4AFC3AA3E217}">
+				<File Id="fil0A9772045EB176A6F3565E9897918A79" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll" />
+			</Component>
+			<Component Id="cmp647F85C0BF70D468FFC8B3A51528E717" Directory="dirAEC9B5E5E078829BD21E2D0D06B096A3" Guid="{2457395B-E897-487A-8CD0-A86035E92C91}">
+				<File Id="filB382230BCF99FE7AE9AE2FBC4DB42D89" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp5A55732BD21A0A4FE1892DE892F6BBFD" Directory="dirAEC9B5E5E078829BD21E2D0D06B096A3" Guid="{B2098813-1A5F-48A8-9848-605249A733C2}">
+				<File Id="filA5473FD52A1E6D8741569897654A4C55" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hant\Microsoft.CodeAnalysis.resources.dll" />
+			</Component>
+			<Component Id="cmp38B8C8BF163C7FDB9FDEB2B15FC9FB2D" Directory="dirAEC9B5E5E078829BD21E2D0D06B096A3" Guid="{495E45B5-E1B3-42E5-A887-55B0D5512A6C}">
+				<File Id="fil01EF0A3481073E9E7C501787AC26CC07" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\RavenDBServer\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+			</Component>
+			<Component Id="cmp34D835B36B9C95A38B294A3B4E27A254" Directory="dirE7B4A6F2DD043E7C7ECBDE7B89C02FF1" Guid="{57B22B9F-E140-4942-83EB-CA6FFE46909B}">
+				<File Id="filDFD6D6D150A776B4FAB224E1777C2555" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\ref\AniGate.WpfClient.dll" />
+			</Component>
+			<Component Id="cmp1E069415229F8B9D23E7DA1DE0EF1DB5" Directory="dir41772C233BE465DE0D167364B3BB566C" Guid="{34069AA1-BD8C-4855-A3E9-27078B828B97}">
+				<File Id="fil5700327F8352A2EBAC45B10CE0955132" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Resources\favicon.ico" />
+			</Component>
+			<Component Id="cmp881AF231C6F7127356D26FB94E0DF37C" Directory="dir56F74B384CB12C6A76741FDC9CE91D35" Guid="{3756C180-7F7A-4638-B41A-35C23C1C8CE1}">
+				<File Id="filB12A95E368CDAB9022DA45EF50196477" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\Ru\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmp01255EFCE476F48D24D8EC1E5DF1AFAD" Directory="dir033DCB4BBD7B9101BEF7C829C5BE9477" Guid="{6D241131-173A-45C7-8584-2A7A0675896C}">
+				<File Id="fil1F4C5A90924903F96632A21EB7B94A24" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\ru-ru\MaterialDesignExtensions.resources.dll" />
+			</Component>
+			<Component Id="cmpAB9E108599B22DF9DF99E6B24C61FC8B" Directory="dirDE2B6474A7AE43169B31CD69645DD47A" Guid="{19207A7E-247C-4501-BBCE-C5F4FEA37275}">
+				<File Id="fil084FE51ACE06C8E6B25F1B1071229DA7" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\linux-arm\native\libzstd.arm.32.so" />
+			</Component>
+			<Component Id="cmpB9C8D417BA3CC7F5118E1E7FB9B08984" Directory="dirD4D406B0649E8BA45C0D436FC1C3D7B7" Guid="{9713C790-10A7-43BB-8039-6EDB39FA7180}">
+				<File Id="fil4E5733A4CA334A044A2000AF12E71874" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\linux-arm64\native\libzstd.arm.64.so" />
+			</Component>
+			<Component Id="cmp5B23E631EAD34929AD6E81D6081EE2F1" Directory="dirE1E651EB5B4F1522E5E10B81FEA70677" Guid="{060E4397-8158-48A0-9614-E6364170BA3C}">
+				<File Id="filBF1B20F3F4912BAE00D153CFCC09E0FA" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\linux-x64\native\libzstd.linux.x64.so" />
+			</Component>
+			<Component Id="cmp7211EBFB313DE0F5543B70C3B04E9EC1" Directory="dir71D0D403061D4DE071C64AEB774E16CF" Guid="{D3660D21-74D7-4687-9DF4-4710B7EB5173}">
+				<File Id="fil29D829EC9166CB6BD100A474758295AB" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\osx-x64\native\libzstd.mac.x64.dylib" />
+			</Component>
+			<Component Id="cmpAA1177B16890BF04C945489DAB0B96FC" Directory="dir65EC979D52EB501E3A656AA03EE4F2F5" Guid="{D6D47917-909E-4AA6-9BD8-078C48E9F018}">
+				<File Id="fil368395F62C1D2FD73C45BA75D2A32F1D" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\win-arm64\native\WebView2Loader.dll" />
+			</Component>
+			<Component Id="cmpD8308409F7320C3307AA013D4CADC62A" Directory="dir1F9DF9DD2FB29AE2942604FAC206D5C4" Guid="{662F6EFB-E25E-4950-8456-CA066C1F5654}">
+				<File Id="filC994897FD595537FEA3F5D0F5DBD12EE" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\win-x64\native\libzstd.win.x64.dll" />
+			</Component>
+			<Component Id="cmpB9D685AE58FEB3A95799FCF678486AA2" Directory="dir1F9DF9DD2FB29AE2942604FAC206D5C4" Guid="{FEF1BE63-1740-4201-A2E5-DB5A22C701F0}">
+				<File Id="filDDB8C2AF8533464741631FC635DF1F70" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\win-x64\native\WebView2Loader.dll" />
+			</Component>
+			<Component Id="cmp3B7BCBA5BE8F0E320B9C9F94C6D199C0" Directory="dir2B43AAE918D399CEF13EC6CBA2D3D5EA" Guid="{8A853A68-7CC9-4165-B1A2-4BCAA06E9968}">
+				<File Id="fil82287BD46639AEE9D3D1CCD92E60BDD7" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\win-x86\native\libzstd.win.x86.dll" />
+			</Component>
+			<Component Id="cmp4F7DF7219262D6FC5265D99235D5A68A" Directory="dir2B43AAE918D399CEF13EC6CBA2D3D5EA" Guid="{A09F7640-65F9-4128-9238-8D9E141445CB}">
+				<File Id="filCB5B16D1774F1A284B9490C5CB978E18" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\runtimes\win-x86\native\WebView2Loader.dll" />
+			</Component>
+			<Component Id="cmp2544370E8C530FC910C20F4E231874C5" Directory="dir598534A9A725378241C7A1558C1841A7" Guid="{7672D4CB-23A5-4B74-9E62-CEBD0B87F284}">
+				<File Id="fil0290025A70FDCC652E40C9E5A2C412C3" KeyPath="yes" Source="..\AniGate.WpfClient\bin\Release\net6.0-windows\uz-Latn-UZ\MaterialDesignExtensions.resources.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir045EC65FB39428D0A7CEA38202B33D9D" Name="it" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir07936F30C1EC64C2A1DEAE6232744C1A" Name="tr" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir63ED405665415376C49A1C41DE98167E">
+			<Directory Id="dir1627B920949DEEFD358E224136824CCB" Name="netcoreapp2.1" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirB9C75524282911E40C3C964A8836A714">
+			<Directory Id="dir1F9DF9DD2FB29AE2942604FAC206D5C4" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir6C708F17C45371E65A5E23DC38652AA8">
+			<Directory Id="dir2383985A0940A1322D74A527995B1B2C" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir26279A5EE74EE3E241CDB84EC6EE8C00" Name="pl" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir2A164A0A47C5D2FF09A0DA6E1C0EF688" Name="es" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir2AB2960D3D81450D4321A192971A412D" Name="cs" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir92F336DAA82E5A629052407A3F87EF27">
+			<Directory Id="dir2B43AAE918D399CEF13EC6CBA2D3D5EA" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirA3553AFE2383074C7E1FF3C2EF7D41BF">
+			<Directory Id="dir2E358535D768F29FEBF82CBFB69D494D" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirBF067C35DCB0C9C395A5C4717650EA60">
+			<Directory Id="dir30B2228405A68D65EA846A51BA75BE0E" Name="net6.0" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dir3733E08634CE22F3ACA1142D0ECA5C0E" Name="unix" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dir42B901FB10752B2744AE05D46EAF35EC" Name="osx-x64" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dir4368456DE80A31A0FABEF422CF868A74" Name="linux-arm64" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dir488482985DEE65CC816678A32BBC6F58" Name="osx" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir4EA06EF680592AD0D33B1E0BDBC08DDF" Name="de" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirDB72A92F3FA070676D548F129F589B9F">
+			<Directory Id="dir5018B0925BFA27DC14B069D74F508259" Name="netcoreapp2.0" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir488482985DEE65CC816678A32BBC6F58">
+			<Directory Id="dir62F83A5693E76E7AD128914EB48F0C46" Name="lib" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirDBA08DB91583D79A201B671127D28BAC">
+			<Directory Id="dir63ED405665415376C49A1C41DE98167E" Name="lib" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirFF6AADC4B618984E1542CDA5FCBD7BB1">
+			<Directory Id="dir65EC979D52EB501E3A656AA03EE4F2F5" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dir6C708F17C45371E65A5E23DC38652AA8" Name="win-arm64" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dir6F75383DB633D8F130457F52F58EA410" Name="linux-arm" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir42B901FB10752B2744AE05D46EAF35EC">
+			<Directory Id="dir71D0D403061D4DE071C64AEB774E16CF" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir772CE2EC271EE71F84CE1BD8F39AAD61" Name="ko" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir7959577709298BAA9C90ACA0F5054801" Name="pt-BR" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir63ED405665415376C49A1C41DE98167E">
+			<Directory Id="dir7E4680B3A36A59987C56FB695DA363E4" Name="net6.0" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir62F83A5693E76E7AD128914EB48F0C46">
+			<Directory Id="dir8DF8F04388380F148D599236B4381CA7" Name="netcoreapp2.0" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dir92F336DAA82E5A629052407A3F87EF27" Name="win-x86" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dir986BEF73997BE02DCDBC34E856C19B36" Name="linux-x64" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dir9C25BE7B57582A21E2789F99FE15E066" Name="runtimes" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dirA3553AFE2383074C7E1FF3C2EF7D41BF" Name="win-x86" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dirAEC9B5E5E078829BD21E2D0D06B096A3" Name="zh-Hant" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dirB9C75524282911E40C3C964A8836A714" Name="win-x64" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir3733E08634CE22F3ACA1142D0ECA5C0E">
+			<Directory Id="dirBF067C35DCB0C9C395A5C4717650EA60" Name="lib" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir63ED405665415376C49A1C41DE98167E">
+			<Directory Id="dirC215288FF00E1C10320C11677241702C" Name="netcoreapp2.0" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dirC5E286ED50B84604F24C52572B3BAAAA" Name="ru" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir4368456DE80A31A0FABEF422CF868A74">
+			<Directory Id="dirD4D406B0649E8BA45C0D436FC1C3D7B7" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dirDB5239E42A1CDA9C69C4C1562F5812E3" Name="win-x64" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirEC7BB4D48B85DAF57A0EBD6ECA5B8993">
+			<Directory Id="dirDB72A92F3FA070676D548F129F589B9F" Name="lib" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dirDBA08DB91583D79A201B671127D28BAC" Name="win" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir6F75383DB633D8F130457F52F58EA410">
+			<Directory Id="dirDE2B6474A7AE43169B31CD69645DD47A" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dirE09E991C4BBA60FA324487CC5D2C4726" Name="fr" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir986BEF73997BE02DCDBC34E856C19B36">
+			<Directory Id="dirE1E651EB5B4F1522E5E10B81FEA70677" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dirE250C7BCEFF8531A23E092BBED2D6879" Name="ja" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirDB5239E42A1CDA9C69C4C1562F5812E3">
+			<Directory Id="dirEAAA7815575A73CA38F50D2F3F2B32AF" Name="native" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir9C25BE7B57582A21E2789F99FE15E066">
+			<Directory Id="dirEC7BB4D48B85DAF57A0EBD6ECA5B8993" Name="linux" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir5F46F574D49F552B476846BBE07EFBE3">
+			<Directory Id="dirFD690B5F765333731586B1633BE69A65" Name="zh-Hans" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dirBF067C35DCB0C9C395A5C4717650EA60">
+			<Directory Id="dirFEDFDB6D4646EE3DF7F24EF243F2D224" Name="netcoreapp2.1" />
+		</DirectoryRef>
+	</Fragment>
+	<Fragment>
+		<DirectoryRef Id="dir58E8247E2885C01898CAD009F9EFD8BA">
+			<Directory Id="dirFF6AADC4B618984E1542CDA5FCBD7BB1" Name="win-arm64" />
+		</DirectoryRef>
+	</Fragment>
+	<!--Application Components End-->
+</Wix>

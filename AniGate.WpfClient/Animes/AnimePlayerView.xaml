@@ -122,7 +122,7 @@
                     </Border>
 
                     <Grid Grid.Row="1">
-                        <ScrollViewer>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <mde:SideNavigation Items="{Binding EpisodeItems, Mode=OneWay}"
                                                 NavigationItemSelectedCommand="{Binding NavItemSelectedCommand, Mode=OneTime}"
                                                 SelectedItem="{Binding CurrentEpisodeItem, Mode=TwoWay}"

@@ -21,6 +21,7 @@
         ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True"
         d:DataContext="{d:DesignInstance Type=compositionRoot:MainWindowViewModel, IsDesignTimeCreatable=False}"
+        Icon="../Resources/favicon.ico"
         >
     <Grid>
         <Grid.RowDefinitions>
