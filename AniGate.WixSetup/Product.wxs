@@ -18,7 +18,8 @@
 
 		<MediaTemplate EmbedCab="yes" />
 
-		<!--<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />-->
+		<Icon Id="favicon" SourceFile="..\AniGate.WpfClient\Resources\favicon.ico"/>
+		<Property Id="ARPPRODUCTICON" Value="favicon" />
 
 		<Feature Id="AniGateFeature" Title="AniGate" Level="1">
 			<ComponentGroupRef Id="AniGateComponentGroup" />
