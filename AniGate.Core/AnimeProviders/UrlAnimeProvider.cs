@@ -26,7 +26,7 @@ public abstract class UrlAnimeProvider : IUrlAnimeProvider
 
     protected async Task<IHtmlDocument?> ReadHtmlDocumentAsync(Uri url)
     {
-        if (_htmlDocumentsByUrl.TryGetValue(url.AbsolutePath, out var document))
+        if (_htmlDocumentsByUrl.TryGetValue(url.AbsoluteUri, out var document))
             return document;
 
         try
