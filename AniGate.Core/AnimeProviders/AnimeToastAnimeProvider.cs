@@ -1,7 +1,4 @@
-﻿using AngleSharp.Html.Dom;
-using AngleSharp.Html.Parser;
-
-namespace AniGate.Core.AnimeProviders;
+﻿namespace AniGate.Core.AnimeProviders;
 
 public sealed class AnimeToastAnimeProvider : UrlAnimeProvider
 {

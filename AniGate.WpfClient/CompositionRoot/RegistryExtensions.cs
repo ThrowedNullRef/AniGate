@@ -26,7 +26,7 @@ namespace AniGate.WpfClient.CompositionRoot
                      });
 
         public static IServiceRegistry RegisterAnimeProvider(this IServiceRegistry registry) =>
-            registry.Register<IAnimeProvider, AnimeToastAnimeProvider>();
+            registry.Register<IUrlAnimeProvider, AnimeToastAnimeProvider>();
 
         public static IServiceRegistry RegisterWatchlist(this IServiceRegistry registry) =>
             registry.Register<WatchlistView>()

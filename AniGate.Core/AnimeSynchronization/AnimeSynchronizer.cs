@@ -6,7 +6,7 @@ namespace AniGate.Core.AnimeSynchronization;
 public sealed class AnimeSynchronizer : IAnimeSynchronizer
 {
     private readonly Func<IAnimeSynchronizationSession> _createSession;
-    private readonly Func<IAnimeProvider> _createAnimeProvider;
+    private readonly Func<IUrlAnimeProvider> _createAnimeProvider;
     private readonly System.Timers.Timer _syncTimer = new ()
     {
         Interval = TimeSpan.FromSeconds(60).TotalMilliseconds,
@@ -15,7 +15,7 @@ public sealed class AnimeSynchronizer : IAnimeSynchronizer
 
     private bool _isSynchronizing;
 
-    public AnimeSynchronizer(Func<IAnimeSynchronizationSession> createSession, Func<IAnimeProvider> createAnimeProvider)
+    public AnimeSynchronizer(Func<IAnimeSynchronizationSession> createSession, Func<IUrlAnimeProvider> createAnimeProvider)
     {
         _createSession = createSession;
         _createAnimeProvider = createAnimeProvider;

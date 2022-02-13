@@ -1,19 +1,19 @@
-﻿using System;
-using AniGate.Core.AnimeProviders;
+﻿using AniGate.Core.AnimeProviders;
 using AniGate.Core.DataAccess;
 using AniGate.WpfClient.FrameworkExtensions;
+using System;
 
 namespace AniGate.WpfClient.Animes;
 
 public sealed class AnimeImportViewModel : BaseNotifyPropertyChanged
 {
     private readonly Func<IAnimeImportSession> _createSession;
-    private readonly Func<IAnimeProvider> _createAnimeProvider;
+    private readonly Func<IUrlAnimeProvider> _createAnimeProvider;
 
     private string _animeUrl = string.Empty;
     private bool _isImporting;
 
-    public AnimeImportViewModel(Func<IAnimeImportSession> createSession, Func<IAnimeProvider> createAnimeProvider)
+    public AnimeImportViewModel(Func<IAnimeImportSession> createSession, Func<IUrlAnimeProvider> createAnimeProvider)
     {
         _createSession = createSession;
         _createAnimeProvider = createAnimeProvider;
