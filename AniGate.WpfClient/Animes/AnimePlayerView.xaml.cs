@@ -7,9 +7,11 @@ namespace AniGate.WpfClient.Animes
     /// </summary>
     public partial class AnimePlayerView : UserControl
     {
+        private readonly AnimePlayerViewModel _viewModel;
+
         public AnimePlayerView(AnimePlayerViewModel viewModel)
         {
-            DataContext = viewModel;
+            DataContext = _viewModel = viewModel;
             InitializeComponent();
         }
     }

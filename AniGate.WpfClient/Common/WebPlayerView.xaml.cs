@@ -9,6 +9,7 @@ namespace AniGate.WpfClient.Common
     {
         private Window? _fullScreenWindow;
         private Panel? _prevParent;
+        private bool _ignoreNextUnload;
 
         public WebPlayerView()
         {
@@ -24,11 +25,10 @@ namespace AniGate.WpfClient.Common
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            WebView.CoreWebView2InitializationCompleted -= WebView_CoreWebView2InitializationCompleted;
-            if (WebView.CoreWebView2 is not null)
+            if (_ignoreNextUnload)
             {
-                WebView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
-                WebView.CoreWebView2.ContainsFullScreenElementChanged -= CoreWebView2_ContainsFullScreenElementChanged;
+                _ignoreNextUnload = false;
+                return;
             }
             
             WebView.Dispose();
@@ -64,6 +64,7 @@ namespace AniGate.WpfClient.Common
 
         private void EnterFullScreen()
         {
+            _ignoreNextUnload = true;
             if (VisualTreeHelper.GetParent(this) is Panel parent)
             {
                 _prevParent = parent;
@@ -78,8 +79,9 @@ namespace AniGate.WpfClient.Common
                 Owner = Application.Current.MainWindow
             };
 
-            _fullScreenWindow.KeyDown += (_, __) => ToggleFullScreen();
+            _fullScreenWindow.KeyDown += (_, _) => ToggleFullScreen();
             _fullScreenWindow.Show();
+            
         }
 
         private void ExitFullScreen()
@@ -87,6 +89,7 @@ namespace AniGate.WpfClient.Common
             if (_fullScreenWindow is null)
                 return;
 
+            _ignoreNextUnload = true;
             if (_prevParent is not null && _fullScreenWindow.Content is WebPlayerView webPlayer)
             {
                 _fullScreenWindow.Content = null;
