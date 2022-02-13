@@ -3,27 +3,13 @@ using AngleSharp.Html.Parser;
 
 namespace AniGate.Core.AnimeProviders;
 
-public sealed class AnimeToastAnimeProvider : IAnimeProvider
+public sealed class AnimeToastAnimeProvider : UrlAnimeProvider
 {
-    private readonly HttpClient _httpClient = new ();
-    private readonly HtmlParser _htmlParser = new ();
-
-    private async Task<IHtmlDocument?> ReadHtmlDocumentAsync(Uri url)
+    public AnimeToastAnimeProvider() : base("AnimeToast", new HttpClient())
     {
-        try
-        {
-            var response = await _httpClient.GetAsync(url);
-            var html = await response.Content.ReadAsStringAsync();
-            var document = _htmlParser.ParseDocument(html);
-            return document;
-        }
-        catch
-        {
-            return null;
-        }
     }
 
-    public async Task<Anime?> ReadAnimeAsync(Uri url)
+    public override async Task<Anime?> ReadAnimeAsync(Uri url)
     {
         var document = await ReadHtmlDocumentAsync(url);
         if (document is null)
@@ -37,8 +23,9 @@ public sealed class AnimeToastAnimeProvider : IAnimeProvider
             OriginalName = title,
             Name = title,
             SourceUrl = url.ToString(),
+            ServiceProvider = ServiceProvider,
             Episodes = await ReadEpisodesAsync(url),
-            Thumbnail = thumbnailUrl is not null ? await _httpClient.GetByteArrayAsync(thumbnailUrl) : null
+            Thumbnail = thumbnailUrl is not null ? await HttpClient.GetByteArrayAsync(thumbnailUrl) : null
         };
         anime.SetNewGuid();
         return anime;
@@ -97,7 +84,4 @@ public sealed class AnimeToastAnimeProvider : IAnimeProvider
             VoeLink = voeLink.ToString(),
         };
     }
-
-    public void Dispose() =>
-        _httpClient.Dispose();
 }

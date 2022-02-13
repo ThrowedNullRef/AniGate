@@ -8,6 +8,8 @@ public sealed class Anime : GuidEntity
 
     public string SourceUrl { get; init; } = string.Empty;
 
+    public string ServiceProvider { get; init; } = string.Empty;
+
     public bool IsWatching { get; set; }
 
     public byte[]? Thumbnail { get; set; }

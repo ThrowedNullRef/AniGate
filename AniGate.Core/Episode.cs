@@ -1,12 +1,5 @@
 ﻿namespace AniGate.Core;
 
-public sealed class EpisodeLink
-{
-    public string Link { get; set; } = string.Empty;
-
-    public bool IsEmbedded { get; set; }
-}
-
 public sealed class Episode
 {
     public int Position { get; init; } = -1;
