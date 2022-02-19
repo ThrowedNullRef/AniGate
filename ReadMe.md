@@ -6,7 +6,7 @@ Features
 
 
 Requirements:
-* https://allthings.how/what-is-microsoft-edge-webview2-runtime/
+* https://developer.microsoft.com/de-de/microsoft-edge/webview2/#download-section
 * https://dotnet.microsoft.com/en-us/download/dotnet/6.0
 
 Some screenshots from the app:
