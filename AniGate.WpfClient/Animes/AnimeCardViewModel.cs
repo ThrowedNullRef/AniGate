@@ -3,20 +3,15 @@ using AniGate.WpfClient.FrameworkExtensions;
 
 namespace AniGate.WpfClient.Animes;
 
-public sealed class AnimeCardViewModel
+public sealed class AnimeCardViewModel : BaseNotifyPropertyChanged
 {
+    private int _imageBorderThickness;
+
     public AnimeCardViewModel(Anime anime, AnimeCardActions actions)
     {
         Anime = anime;
-        NewEpisodePrefix = anime.HasUnwatchedEpisode() ? "Neue Folge(n):" : string.Empty;
 
         var commandsCount = 0;
-        if (actions.OnPlay is not null)
-        {
-            PlayCommand = new DelegateCommand(() => actions.OnPlay(anime));
-            ++commandsCount;
-        }
-
         if (actions.OnDelete is not null)
         {
             DeleteCommand = new DelegateCommand(() => actions.OnDelete(anime));
@@ -35,12 +30,16 @@ public sealed class AnimeCardViewModel
             ++commandsCount;
         }
 
+        PlayCommand = new DelegateCommand(() => actions.OnPlay(anime));
+        MouseEnterCommand = new DelegateCommand(Focus);
+        MouseLeaveCommand = new DelegateCommand(UndoFocus);
         CommandsCount = commandsCount;
+        HasUnwatchedEpisodes = anime.HasUnwatchedEpisode();
     }
 
     public Anime Anime { get; }
 
-    public string NewEpisodePrefix { get; }
+    public bool HasUnwatchedEpisodes { get; }
 
     public DelegateCommand? PlayCommand { get; }
 
@@ -50,5 +49,25 @@ public sealed class AnimeCardViewModel
 
     public DelegateCommand? RemoveFromWatchlistCommand { get; }
 
+    public DelegateCommand MouseEnterCommand { get; }
+
+    public DelegateCommand MouseLeaveCommand { get; }
+
     public int CommandsCount { get; }
+
+    public int ImageBorderThickness
+    {
+        get => _imageBorderThickness;
+        set => SetIfDifferent(ref _imageBorderThickness, value);
+    }
+
+    private void Focus()
+    {
+        ImageBorderThickness = 12;
+    }
+
+    private void UndoFocus()
+    {
+        ImageBorderThickness = 0;
+    }
 }

@@ -7,17 +7,10 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:common="clr-namespace:AniGate.WpfClient.Common"
              xmlns:animes="clr-namespace:AniGate.WpfClient.Animes"
-             xmlns:frameworkExtensions="clr-namespace:AniGate.WpfClient.FrameworkExtensions"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=animes:AnimePlayerViewModel, IsDesignTimeCreatable=False}"
              >
-
-    <UserControl.Resources>
-        <frameworkExtensions:BooleanToCustomVisibilityConverter x:Key="BoolToCollapsedConverter" TrueValue="Visible" FalseValue="Collapsed" />
-        <frameworkExtensions:BooleanToCustomVisibilityConverter x:Key="InverseBoolToCollapsedConverter" TrueValue="Collapsed" FalseValue="Visible" />
-    </UserControl.Resources>
-
     <Grid Margin="32">
         <Grid.RowDefinitions>
             <RowDefinition Height="68"/>
@@ -87,7 +80,6 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-
                             
                             <Button Grid.Column="0" 
                                     Command="{Binding ToggleWatchedCommand}" 
@@ -127,7 +119,7 @@
                             <mde:SideNavigation Items="{Binding EpisodeItems, Mode=OneWay}"
                                                 NavigationItemSelectedCommand="{Binding NavItemSelectedCommand, Mode=OneTime}"
                                                 SelectedItem="{Binding CurrentEpisodeItem, Mode=TwoWay}"
-                        />
+                            />
                         </ScrollViewer>
                         
                     </Grid>

@@ -5,7 +5,12 @@ namespace AniGate.WpfClient.Animes;
 
 public sealed class AnimeCardActions
 {
-    public Action<Anime>? OnPlay { get; init; }
+    public AnimeCardActions(Action<Anime> onPlay)
+    {
+        OnPlay = onPlay;
+    }
+
+    public Action<Anime> OnPlay { get; }
 
     public Action<Anime>? OnDelete { get; init; }
 

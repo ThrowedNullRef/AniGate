@@ -16,6 +16,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignDarkTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <frameworkExtensions:BooleanToCustomVisibilityConverter x:Key="BoolToCollapsedConverter" TrueValue="Visible" FalseValue="Collapsed" />
+            <frameworkExtensions:BooleanToCustomVisibilityConverter x:Key="InverseBoolToCollapsedConverter" TrueValue="Collapsed" FalseValue="Visible" />
             <frameworkExtensions:ByteArrayToBitmapImageConverter x:Key="ByteArrayToBitmapImageConverter" />
         </ResourceDictionary>
     </Application.Resources>

@@ -5,46 +5,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:animes="clr-namespace:AniGate.WpfClient.Animes"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=animes:AnimeCardViewModel, IsDesignTimeCreatable=False}">
-    <material:Card Width="240">
+    <material:Card Width="260">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="360"/>
+                <RowDefinition Height="390"/>
                 <RowDefinition Height="48"/>
                 <RowDefinition Height="60" />
             </Grid.RowDefinitions>
 
-            <Image Grid.Row="0" 
-                   Source="{Binding Anime.Thumbnail, Converter={StaticResource ByteArrayToBitmapImageConverter}}"
-                   Stretch="UniformToFill"
-                   />
+            <Border Grid.Row="0" BorderThickness="{Binding ImageBorderThickness}" 
+                    Cursor="Hand" 
+                    BorderBrush="{StaticResource AttentionToActionBrush}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Image Grid.Row="1" Source="{Binding Anime.Thumbnail, Converter={StaticResource ByteArrayToBitmapImageConverter}}"
+                           Stretch="UniformToFill"
+                    />
+
+                    <Canvas Grid.Row="0" 
+                            Visibility="{Binding HasUnwatchedEpisodes, Converter={StaticResource BoolToCollapsedConverter}}"
+                            >
+                        <Grid Margin="10">
+                            <Grid.Background>
+                                <SolidColorBrush Color="DarkGreen" Opacity=".65"/>
+                            </Grid.Background>
+                            <TextBlock Padding="10" 
+                                       FontSize="11" 
+                                       Foreground="{StaticResource MaterialDesignDarkForeground}">
+                                Neue Folgen
+                            </TextBlock>
+                        </Grid>
+                    </Canvas>
+                </Grid>
+                
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="MouseEnter">
+                        <b:InvokeCommandAction Command="{Binding MouseEnterCommand}" />
+                    </b:EventTrigger>
+                    <b:EventTrigger EventName="MouseLeave">
+                        <b:InvokeCommandAction Command="{Binding MouseLeaveCommand}" />
+                    </b:EventTrigger>
+                    <b:EventTrigger EventName="MouseDown">
+                        <b:InvokeCommandAction Command="{Binding PlayCommand}"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </Border>
+            
 
             <Border Grid.Row="1" 
-                Padding="24 4"  
-                >
+                    Padding="24 4"
+                    >
                 <TextBlock TextWrapping="Wrap" 
                        VerticalAlignment="Center"
                        TextAlignment="Center"
                        FontWeight="Bold"
                        FontSize="13"
-                       TextTrimming="WordEllipsis" 
-            >
-                <Run Text="{Binding NewEpisodePrefix, Mode=OneWay}" 
-                     Foreground="Green" 
-                     FontSize="11"
-                     />
-                <Run Text="{Binding Anime.OriginalName,Mode=OneWay}" 
-                     />
+                       TextTrimming="WordEllipsis" >
+                    <Run Text="{Binding Anime.OriginalName,Mode=OneWay}" />
                 </TextBlock>
             </Border>
 
             <UniformGrid Grid.Row="2"
-                     Rows="1"
-                     Columns="{Binding CommandsCount}"
-                     Background="{StaticResource AttentionToActionBrush}"
-                     >
+                         Rows="1"
+                         Columns="{Binding CommandsCount}"
+                         >
                 <Button Command="{Binding DeleteCommand}" 
                     Visibility="{Binding DeleteCommand, Converter={StaticResource NullVisibilityConverter}}" 
                     Foreground="{StaticResource MaterialDesignValidationErrorBrush}"
@@ -66,13 +98,6 @@
                     Style="{StaticResource MaterialDesignIconButton}"
                     >
                     <material:PackIcon Kind="Eye" />
-                </Button>
-                <Button Command="{Binding PlayCommand}" 
-                    Visibility="{Binding PlayCommand, Converter={StaticResource NullVisibilityConverter}}" 
-                    ToolTip="Zum Player"
-                    Style="{StaticResource MaterialDesignIconButton}"
-            >
-                    <material:PackIcon Kind="Play" />
                 </Button>
             </UniformGrid>
         </Grid>

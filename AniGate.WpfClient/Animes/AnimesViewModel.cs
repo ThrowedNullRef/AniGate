@@ -20,9 +20,8 @@ public sealed class AnimesViewModel : BaseNotifyPropertyChanged
     {
         _createSession = createSession;
         _animeSynchronizer = animeSynchronizer;
-        AnimeListViewModel = new AnimeListViewModel(new List<Anime>(), new AnimeCardActions
+        AnimeListViewModel = new AnimeListViewModel(new List<Anime>(), new AnimeCardActions(navigator.NavigateToPlayer)
         {
-            OnPlay = navigator.NavigateToPlayer,
             OnAddToWatchlist = OnAddToWatchlist,
             OnRemoveFromWatchlist = OnRemoveFromWatchlist,
             OnDelete = OnDelete
