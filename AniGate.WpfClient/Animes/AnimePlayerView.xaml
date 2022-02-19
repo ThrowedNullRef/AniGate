@@ -26,9 +26,7 @@
                   >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
                 <Button Command="{Binding NavigateBackCommand}"
@@ -37,12 +35,10 @@
                     <materialDesign:PackIcon Kind="ArrowBack" Width="24" Height="24"/>
                 </Button>
 
-                <TextBlock Grid.Column="0"
-                           Grid.ColumnSpan="4"
+                <TextBlock Grid.Column="1"
                            Text="{Binding Anime.OriginalName, FallbackValue='-'}"
                            VerticalAlignment="Center"
-                           HorizontalAlignment="Right"
-                           Margin="0 0 40 0"
+                           Margin="20 0 0 0"
                            FontWeight="Bold"
                            FontSize="18"
                            />
